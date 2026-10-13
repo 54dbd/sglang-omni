@@ -310,7 +310,8 @@ curl -N -X POST http://localhost:8000/v1/audio/speech \
       "text": "We asked over twenty different people, and they all said it was his."
     }],
     "stream": true,
-    "response_format": "pcm"
+    "response_format": "pcm",
+    "sample_rate": 8000
   }' \
   --output output.pcm
 ```
@@ -325,6 +326,12 @@ generation fails mid-stream. The sample-rate headers are the same for both
 formats. `usage` reports the model's own token counts, so what `input_tokens`
 covers depends on the model: Qwen3-TTS counts reference-audio codec frames, not
 text tokens.
+
+Set `sample_rate` to resample the generated audio before it is returned. The
+same anti-aliasing filter is used for complete and streaming responses, and
+`X-Sample-Rate` reports the actual output rate. Supported values range from
+8,000 to 192,000 Hz. Compressed formats additionally require a rate supported
+by their encoder; invalid combinations return a `sample_rate` validation error.
 
 
 For raw PCM, use the response's `X-SGLang-Omni-Speech-Id` with
@@ -367,6 +374,7 @@ curl -X POST http://localhost:8000/v1/audio/speech/batch \
     "model": "fishaudio/s2-pro",
     "voice": "default",
     "response_format": "wav",
+    "sample_rate": 16000,
     "items": [
       {"input": "First sentence."},
       {"input": "Second sentence.", "speed": 1.1},
@@ -414,6 +422,7 @@ async def main():
                 "model": "fishaudio/s2-pro",
                 "voice": "default",
                 "response_format": "pcm",
+                "sample_rate": 8000,
                 "stream_audio": True,
                 "split_granularity": "sentence",
             },
@@ -641,6 +650,7 @@ The table below lists all parameters accepted by the `/v1/audio/speech` endpoint
 | `input` | string | (required) | Text to synthesize |
 | `voice` | string | `"default"` | Preset or uploaded voice identifier |
 | `response_format` | string | `"wav"` | Output audio format: `wav`, `mp3`, `flac`, `pcm`, `aac`, or `opus` |
+| `sample_rate` | int | model native rate | Output sample rate from 8,000 to 192,000 Hz. The server resamples complete and streaming audio and reports the effective rate in response metadata |
 | `speed` | float | `1.0` | Playback speed multiplier from `0.25` to `4.0` |
 | `stream` | bool | `false` | Enable raw PCM streaming. When true, `response_format` must be `pcm` |
 | `stream_format` | string | `"audio"` | Streaming transport: `audio` for raw PCM bytes, `sse` for `speech.audio.delta` / `speech.audio.done` events. `sse` streams without `stream=true` and requires `response_format="pcm"` |

@@ -9,13 +9,14 @@ import logging
 from collections.abc import AsyncIterator
 from typing import Any
 
+import numpy as np
 import pytest
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
 
 from sglang_omni.admission import QueueFullError
 from sglang_omni.client import Client, ClientError, GenerateChunk
-from sglang_omni.client.audio import encode_pcm
+from sglang_omni.client.audio import encode_pcm, resample_audio
 from sglang_omni.client.client import StreamedStopTrimmer, extract_inputs
 from sglang_omni.client.types import GenerateRequest, UsageInfo
 from sglang_omni.pipeline.coordinator import Coordinator
@@ -146,6 +147,7 @@ class SuccessfulSpeechClient:
         self.finish_reason = finish_reason
         self.generate_requests: list[GenerateRequest] = []
         self.speech_requests: list[GenerateRequest] = []
+        self.speech_sample_rates: list[int | None] = []
 
     def health(self) -> dict[str, Any]:
         return {"running": True}
@@ -166,6 +168,7 @@ class SuccessfulSpeechClient:
         *,
         request_id: str,
         response_format: str = "wav",
+        sample_rate: int | None = None,
         speed: float = 1.0,
         allow_format_fallback: bool = True,
     ):
@@ -173,10 +176,12 @@ class SuccessfulSpeechClient:
 
         del request_id, speed, allow_format_fallback
         self.speech_requests.append(request)
+        self.speech_sample_rates.append(sample_rate)
         return SpeechResult(
             audio_bytes=b"RIFF",
             mime_type=f"audio/{response_format}",
             format=response_format,
+            sample_rate=sample_rate or self.sample_rate,
             usage=UsageInfo(
                 prompt_tokens=5,
                 completion_tokens=2,
@@ -1711,6 +1716,42 @@ def test_speech_stream_headers_use_chunk_sample_rate() -> None:
     assert response.headers["x-channels"] == "1"
     assert response.headers["x-bit-depth"] == "16"
     assert response.content == expected
+
+
+def test_speech_stream_resamples_to_requested_output_rate() -> None:
+    client = TestClient(
+        create_app(SuccessfulSpeechClient(sample_rate=24000), model_name="s2-pro")
+    )
+
+    response = client.post(
+        "/v1/audio/speech",
+        json={
+            "input": "hello",
+            "stream": True,
+            "response_format": "pcm",
+            "sample_rate": 8000,
+        },
+    )
+
+    source = np.array([0.0, 0.1, -0.1, 0.0], dtype=np.float32)
+    expected = encode_pcm(resample_audio(source, 24000, 8000), 8000)
+    assert response.status_code == 200
+    assert response.headers["x-sample-rate"] == "8000"
+    assert response.content == expected
+
+
+def test_speech_non_streaming_passes_requested_output_rate() -> None:
+    client_impl = SuccessfulSpeechClient(sample_rate=24000)
+    client = TestClient(create_app(client_impl, model_name="s2-pro"))
+
+    response = client.post(
+        "/v1/audio/speech",
+        json={"input": "hello", "response_format": "wav", "sample_rate": 8000},
+    )
+
+    assert response.status_code == 200
+    assert response.headers["x-sample-rate"] == "8000"
+    assert client_impl.speech_sample_rates == [8000]
 
 
 def test_speech_stream_records_terminal_state_from_a_later_chunk() -> None:

@@ -11,11 +11,13 @@ import base64
 import importlib.util
 import io
 import logging
+import math
 import shutil
 import struct
 from functools import cache
 
 import numpy as np
+from scipy.signal import firwin
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +33,9 @@ FORMAT_MIME_TYPES: dict[str, str] = {
 
 # Default sample rate for generated audio
 DEFAULT_SAMPLE_RATE = 24000
+MIN_SAMPLE_RATE = 8000
+MAX_SAMPLE_RATE = 192000
+RESAMPLER_OUTPUT_BLOCK_SAMPLES = 4096
 
 # Configurations for PyAV encoding
 PYAV_ENCODE_CONFIGS = {
@@ -77,6 +82,248 @@ PYAV_ENCODE_CONFIGS = {
         },
     },
 }
+
+
+def audio_sample_rate_unavailable_reason(
+    response_format: str, sample_rate: int
+) -> str | None:
+    """Return why an exact output sample rate is unsupported by an encoder."""
+
+    config = PYAV_ENCODE_CONFIGS.get(response_format)
+    if config is None:
+        return None
+    else:
+        pass
+    valid_rates = config["valid_rates"]
+    if sample_rate in valid_rates:
+        return None
+    else:
+        pass
+    supported = ", ".join(str(rate) for rate in sorted(valid_rates))
+    return (
+        f"sample_rate={sample_rate} is not supported for "
+        f"response_format={response_format!r}; supported rates: {supported}"
+    )
+
+
+class StreamingAudioResampler:
+    """Stateful rational FIR resampler with chunk-boundary invariant output."""
+
+    def __init__(self, source_sample_rate: int, target_sample_rate: int) -> None:
+        if source_sample_rate <= 0 or target_sample_rate <= 0:
+            raise ValueError("sample rates must be positive")
+        else:
+            pass
+        divisor = math.gcd(source_sample_rate, target_sample_rate)
+        self.source_sample_rate = source_sample_rate
+        self.target_sample_rate = target_sample_rate
+        self.up_factor = target_sample_rate // divisor
+        self.down_factor = source_sample_rate // divisor
+        self.identity = self.up_factor == self.down_factor
+        self.total_input_samples = 0
+        self.next_output_index = 0
+        self.finished = False
+        self.channel_shape: tuple[int, ...] | None = None
+        self.buffer = np.empty((0,), dtype=np.float32)
+        self.buffer_start = 0
+
+        if self.identity:
+            self.filter_coefficients_by_phase = np.empty((0, 0), dtype=np.float64)
+            self.filter_tap_offsets = np.empty((0,), dtype=np.int64)
+            self.delay_output_samples = 0
+            self.maximum_phase_taps = 0
+        else:
+            maximum_factor = max(self.up_factor, self.down_factor)
+            half_length = 10 * maximum_factor
+            half_length = math.ceil(half_length / self.down_factor) * self.down_factor
+            coefficients = firwin(
+                2 * half_length + 1,
+                1.0 / maximum_factor,
+                window=("kaiser", 5.0),
+            ).astype(np.float64)
+            coefficients *= self.up_factor
+            filter_phases = tuple(
+                coefficients[phase :: self.up_factor] for phase in range(self.up_factor)
+            )
+            self.delay_output_samples = half_length // self.down_factor
+            self.maximum_phase_taps = max(
+                len(phase_coefficients) for phase_coefficients in filter_phases
+            )
+            self.filter_coefficients_by_phase = np.zeros(
+                (self.up_factor, self.maximum_phase_taps), dtype=np.float64
+            )
+            for phase_index, phase_coefficients in enumerate(filter_phases):
+                self.filter_coefficients_by_phase[
+                    phase_index, : len(phase_coefficients)
+                ] = phase_coefficients
+            self.filter_tap_offsets = np.arange(self.maximum_phase_taps, dtype=np.int64)
+
+    def push(self, audio: object) -> np.ndarray:
+        """Append one source-rate chunk and return newly available output."""
+
+        if self.finished:
+            raise RuntimeError("cannot push audio after finishing the resampler")
+        else:
+            pass
+        chunk = to_numpy(audio)
+        if chunk.ndim == 0:
+            chunk = chunk.reshape(1)
+        else:
+            pass
+        channel_shape = chunk.shape[:-1]
+        if self.channel_shape is None:
+            self.channel_shape = channel_shape
+            self.buffer = np.empty(channel_shape + (0,), dtype=np.float32)
+        elif channel_shape != self.channel_shape:
+            raise ValueError(
+                "audio channel shape changed from "
+                f"{self.channel_shape} to {channel_shape}"
+            )
+        else:
+            pass
+        if chunk.shape[-1] == 0:
+            return self.empty_output()
+        else:
+            pass
+        if self.identity:
+            self.total_input_samples += int(chunk.shape[-1])
+            self.next_output_index += int(chunk.shape[-1])
+            return chunk.astype(np.float32, copy=False)
+        else:
+            pass
+        self.buffer = np.concatenate((self.buffer, chunk), axis=-1)
+        self.total_input_samples += int(chunk.shape[-1])
+        output = self.produce_available(final=False)
+        self.prune_buffer()
+        return output
+
+    def finish(self) -> np.ndarray:
+        """Flush filter delay and return the final target-rate samples."""
+
+        if self.finished:
+            return self.empty_output()
+        else:
+            pass
+        self.finished = True
+        if self.identity:
+            return self.empty_output()
+        else:
+            pass
+        output = self.produce_available(final=True)
+        self.buffer = self.empty_output()
+        self.buffer_start = self.total_input_samples
+        return output
+
+    def produce_available(self, *, final: bool) -> np.ndarray:
+        target_count = math.ceil(
+            self.total_input_samples * self.up_factor / self.down_factor
+        )
+        output_blocks: list[np.ndarray] = []
+        while self.next_output_index < target_count:
+            block_end = min(
+                self.next_output_index + RESAMPLER_OUTPUT_BLOCK_SAMPLES,
+                target_count,
+            )
+            output_indices = np.arange(
+                self.next_output_index, block_end, dtype=np.int64
+            )
+            raw_output_indices = self.delay_output_samples + output_indices
+            high_rate_indices = raw_output_indices * self.down_factor
+            source_indices = high_rate_indices // self.up_factor
+            phase_indices = high_rate_indices % self.up_factor
+            requested_block_samples = len(output_indices)
+            if final:
+                available_block_samples = requested_block_samples
+            else:
+                available_block_samples = int(
+                    np.searchsorted(
+                        source_indices,
+                        self.total_input_samples,
+                        side="left",
+                    )
+                )
+            if available_block_samples == 0:
+                break
+            else:
+                pass
+            source_indices = source_indices[:available_block_samples]
+            phase_indices = phase_indices[:available_block_samples]
+            buffer_indices = (
+                source_indices[:, None]
+                - self.filter_tap_offsets[None, :]
+                - self.buffer_start
+            )
+            valid_buffer_indices = (buffer_indices >= 0) & (
+                buffer_indices < self.buffer.shape[-1]
+            )
+            bounded_buffer_indices = np.clip(
+                buffer_indices,
+                0,
+                self.buffer.shape[-1] - 1,
+            )
+            input_samples = np.take(
+                self.buffer,
+                bounded_buffer_indices,
+                axis=-1,
+            )
+            block_coefficients = self.filter_coefficients_by_phase[phase_indices]
+            block_coefficients = np.where(
+                valid_buffer_indices,
+                block_coefficients,
+                0.0,
+            )
+            coefficient_shape = (1,) * len(
+                self.channel_shape or ()
+            ) + block_coefficients.shape
+            output_blocks.append(
+                np.sum(
+                    input_samples * block_coefficients.reshape(coefficient_shape),
+                    axis=-1,
+                    dtype=np.float64,
+                ).astype(np.float32)
+            )
+            self.next_output_index += available_block_samples
+            if available_block_samples < requested_block_samples:
+                break
+            else:
+                pass
+        if not output_blocks:
+            return self.empty_output()
+        else:
+            pass
+        return np.concatenate(output_blocks, axis=-1)
+
+    def prune_buffer(self) -> None:
+        raw_output_index = self.delay_output_samples + self.next_output_index
+        source_index = raw_output_index * self.down_factor // self.up_factor
+        oldest_required = max(0, source_index - self.maximum_phase_taps + 1)
+        remove_count = min(
+            max(oldest_required - self.buffer_start, 0), self.buffer.shape[-1]
+        )
+        if remove_count > 0:
+            self.buffer = self.buffer[..., remove_count:]
+            self.buffer_start += remove_count
+        else:
+            pass
+
+    def empty_output(self) -> np.ndarray:
+        return np.empty((self.channel_shape or ()) + (0,), dtype=np.float32)
+
+
+def resample_audio(
+    audio: object, source_sample_rate: int, target_sample_rate: int
+) -> np.ndarray:
+    """Resample complete audio with the same FIR used by streaming responses."""
+
+    resampler = StreamingAudioResampler(source_sample_rate, target_sample_rate)
+    first = resampler.push(audio)
+    final = resampler.finish()
+    if first.shape[-1] == 0:
+        return final
+    elif final.shape[-1] == 0:
+        return first
+    else:
+        return np.concatenate((first, final), axis=-1)
 
 
 @cache
@@ -370,6 +617,7 @@ def encode_audio(
     *,
     response_format: str = "wav",
     sample_rate: int = DEFAULT_SAMPLE_RATE,
+    target_sample_rate: int | None = None,
     speed: float = 1.0,
     allow_format_fallback: bool = True,
 ) -> tuple[bytes, str]:
@@ -379,6 +627,7 @@ def encode_audio(
         audio: Raw audio data (numpy, torch tensor, list, bytes)
         response_format: Target format (wav, mp3, flac, opus, aac, pcm)
         sample_rate: Audio sample rate in Hz
+        target_sample_rate: Optional output sample rate in Hz
         speed: Speed adjustment factor (1.0 = normal)
         allow_format_fallback: If True, return WAV when a compressed encoder is
             unavailable or the format is unknown. If False, raise ValueError.
@@ -387,6 +636,23 @@ def encode_audio(
         (encoded_bytes, mime_type)
     """
     fmt = response_format.lower().strip()
+    if target_sample_rate is not None:
+        if not MIN_SAMPLE_RATE <= target_sample_rate <= MAX_SAMPLE_RATE:
+            raise ValueError(
+                f"target_sample_rate must be between {MIN_SAMPLE_RATE} "
+                f"and {MAX_SAMPLE_RATE}"
+            )
+        else:
+            pass
+        unavailable_reason = audio_sample_rate_unavailable_reason(
+            fmt, target_sample_rate
+        )
+        if unavailable_reason is not None:
+            raise ValueError(unavailable_reason)
+        else:
+            pass
+    else:
+        pass
     arr = to_numpy(audio)
 
     if arr.ndim > 1:
@@ -417,6 +683,12 @@ def encode_audio(
             sample_rate = adjusted[0][1]
         else:
             arr, sample_rate = apply_speed(arr, speed, sample_rate)
+    else:
+        pass
+
+    if target_sample_rate is not None and target_sample_rate != sample_rate:
+        arr = resample_audio(arr, sample_rate, target_sample_rate)
+        sample_rate = target_sample_rate
     else:
         pass
 

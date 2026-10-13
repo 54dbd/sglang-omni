@@ -37,6 +37,7 @@ class StreamingSpeechClient:
         self.sample_rate = sample_rate
         self.generated_prompts: list[str] = []
         self.speech_prompts: list[str] = []
+        self.speech_sample_rates: list[int | None] = []
 
     def health(self) -> dict[str, Any]:
         return {"running": True}
@@ -57,16 +58,18 @@ class StreamingSpeechClient:
         *,
         request_id: str,
         response_format: str = "wav",
+        sample_rate: int | None = None,
         speed: float = 1.0,
         allow_format_fallback: bool = True,
     ) -> SpeechResult:
         del request_id, speed, allow_format_fallback
         self.speech_prompts.append(request.prompt)
+        self.speech_sample_rates.append(sample_rate)
         return SpeechResult(
             audio_bytes=b"RIFF",
             mime_type=f"audio/{response_format}",
             format=response_format,
-            sample_rate=self.sample_rate,
+            sample_rate=sample_rate or self.sample_rate,
         )
 
     async def abort(self, request_id: str) -> None:
@@ -758,6 +761,33 @@ def test_speech_websocket_non_streaming_start_uses_result_sample_rate() -> None:
 
     assert start["type"] == "audio.start"
     assert start["sample_rate"] == 44100
+
+
+@pytest.mark.parametrize("stream_audio", [False, True])
+def test_speech_websocket_uses_requested_output_sample_rate(
+    stream_audio: bool,
+) -> None:
+    client_impl = StreamingSpeechClient(sample_rate=24000)
+    client = TestClient(create_app(client_impl, model_name="tts"))
+
+    with client.websocket_connect("/v1/audio/speech/stream") as websocket:
+        websocket.send_json(
+            session_config(
+                response_format="pcm",
+                stream_audio=stream_audio,
+                sample_rate=8000,
+            )
+        )
+        assert websocket.receive_json()["type"] == "session.configured"
+        websocket.send_json({"type": "input.text", "text": "Hello."})
+        start = websocket.receive_json()
+
+    assert start["type"] == "audio.start"
+    assert start["sample_rate"] == 8000
+    if stream_audio:
+        assert client_impl.speech_sample_rates == []
+    else:
+        assert client_impl.speech_sample_rates == [8000]
 
 
 def test_speech_websocket_cancellation_aborts_active_request() -> None:

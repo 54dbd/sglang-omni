@@ -6,6 +6,7 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
+import numpy as np
 import pytest
 
 from sglang_omni.client import Client
@@ -82,6 +83,29 @@ def test_speech_surfaces_finish_reason() -> None:
         ).speech(GenerateRequest(prompt="hello"), request_id="speech-2")
     )
     assert unreported.finish_reason == "unknown"
+
+
+def test_speech_resamples_to_requested_output_rate() -> None:
+    source_sample_rate = 24000
+    target_sample_rate = 8000
+    audio = np.linspace(-0.25, 0.25, source_sample_rate, dtype=np.float32)
+    client = Client(
+        SubmitStubCoordinator(
+            {"audio_data": audio.tolist(), "sample_rate": source_sample_rate}
+        )
+    )
+
+    result = asyncio.run(
+        client.speech(
+            GenerateRequest(prompt="hello"),
+            request_id="speech-resampled",
+            response_format="pcm",
+            sample_rate=target_sample_rate,
+        )
+    )
+
+    assert result.sample_rate == target_sample_rate
+    assert len(result.audio_bytes) == target_sample_rate * 2
 
 
 @pytest.mark.parametrize("finish_reason", ["length", "stop", None])

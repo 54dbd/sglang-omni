@@ -60,6 +60,7 @@ from sglang_omni.client import (
 )
 from sglang_omni.client.audio import (
     DEFAULT_SAMPLE_RATE,
+    StreamingAudioResampler,
     apply_speed,
     encode_pcm,
     select_audio_delta,
@@ -1578,6 +1579,7 @@ def register_speech(app: FastAPI) -> None:
                     gen_req=gen_req,
                     request_id=request_id,
                     speed=req.speed,
+                    sample_rate=req.sample_rate,
                     speech_stream_outcomes=app.state.speech_stream_outcomes,
                     stream_format=req.stream_format,
                 )
@@ -1599,6 +1601,7 @@ def register_speech(app: FastAPI) -> None:
                 gen_req=gen_req,
                 request_id=request_id,
                 response_format=req.response_format,
+                sample_rate=req.sample_rate,
                 speed=req.speed,
             )
         except ClientError as exc:
@@ -1613,6 +1616,7 @@ def register_speech(app: FastAPI) -> None:
         headers = {
             "Content-Disposition": f'attachment; filename="speech.{result.format}"',
             "X-Request-Id": request_id,
+            "X-Sample-Rate": str(result.sample_rate or DEFAULT_SAMPLE_RATE),
             # note (Junnan Li): the body is binary audio, so the terminal state
             # travels in the same X- header channel as usage.
             "X-Finish-Reason": result.finish_reason,
@@ -1756,28 +1760,48 @@ def speech_pcm_chunk_bytes(
     *,
     emitted_samples: int,
     speed: float,
+    resampler: StreamingAudioResampler | None = None,
 ) -> tuple[bytes | None, int, int]:
-    sample_rate = chunk.sample_rate or DEFAULT_SAMPLE_RATE
+    source_sample_rate = chunk.sample_rate or DEFAULT_SAMPLE_RATE
     audio_data, emitted_samples = select_audio_delta(
         chunk.audio_data,
         emitted_samples=emitted_samples,
         is_terminal=chunk.finish_reason is not None,
     )
     if audio_data is None:
-        return None, emitted_samples, sample_rate
+        output_sample_rate = (
+            resampler.target_sample_rate
+            if resampler is not None
+            else source_sample_rate
+        )
+        return None, emitted_samples, output_sample_rate
     else:
         pass
 
     if speed != 1.0:
-        audio_data, sample_rate = apply_speed(audio_data, speed, sample_rate)
+        audio_data, source_sample_rate = apply_speed(
+            audio_data, speed, source_sample_rate
+        )
     else:
         pass
-    audio_bytes = encode_pcm(audio_data, sample_rate)
+    if resampler is not None:
+        if source_sample_rate != resampler.source_sample_rate:
+            raise RuntimeError(
+                "Raw PCM speech stream sample rate changed from "
+                f"{resampler.source_sample_rate} to {source_sample_rate}"
+            )
+        else:
+            pass
+        audio_data = resampler.push(audio_data)
+        output_sample_rate = resampler.target_sample_rate
+    else:
+        output_sample_rate = source_sample_rate
+    audio_bytes = encode_pcm(audio_data, output_sample_rate)
     if not audio_bytes:
-        return None, emitted_samples, sample_rate
+        return None, emitted_samples, output_sample_rate
     else:
         pass
-    return audio_bytes, emitted_samples, sample_rate
+    return audio_bytes, emitted_samples, output_sample_rate
 
 
 async def speech_audio_response(
@@ -1788,6 +1812,7 @@ async def speech_audio_response(
     speed: float,
     stream_format: Literal["audio", "sse"],
     *,
+    sample_rate: int | None = None,
     speech_stream_outcomes: SpeechStreamOutcomes,
 ) -> StreamingResponse:
     """Stream raw PCM or SSE events once the first audio chunk sets the headers."""
@@ -1813,6 +1838,7 @@ async def speech_audio_response(
     stream_sample_rate: int | None = None
     stream_completed = False
     stream_closed = False
+    stream_resampler: StreamingAudioResampler | None = None
     disconnect_task = asyncio.create_task(wait_for_request_disconnect(request))
     next_chunk_task: asyncio.Task[GenerateChunk] | None = None
 
@@ -1845,11 +1871,21 @@ async def speech_audio_response(
             else:
                 pass
 
+            source_sample_rate = chunk.sample_rate or DEFAULT_SAMPLE_RATE
+            if stream_resampler is None:
+                stream_resampler = StreamingAudioResampler(
+                    source_sample_rate,
+                    sample_rate if sample_rate is not None else source_sample_rate,
+                )
+            else:
+                pass
+
             first_audio_bytes, emitted_samples, stream_sample_rate = (
                 speech_pcm_chunk_bytes(
                     chunk,
                     emitted_samples=emitted_samples,
                     speed=speed,
+                    resampler=stream_resampler,
                 )
             )
             if first_audio_bytes is not None:
@@ -1857,7 +1893,14 @@ async def speech_audio_response(
             else:
                 pass
 
-        if first_audio_bytes is None or stream_sample_rate is None:
+        if first_audio_bytes is None and stream_resampler is not None:
+            first_audio_bytes = encode_pcm(
+                stream_resampler.finish(), stream_resampler.target_sample_rate
+            )
+            stream_sample_rate = stream_resampler.target_sample_rate
+        else:
+            pass
+        if not first_audio_bytes or stream_sample_rate is None:
             raise RuntimeError("No audio output generated from the pipeline.")
         else:
             pass
@@ -1900,6 +1943,7 @@ async def speech_audio_response(
                     chunk,
                     emitted_samples=emitted_samples,
                     speed=speed,
+                    resampler=stream_resampler,
                 )
                 if audio_bytes is None:
                     continue
@@ -1913,6 +1957,16 @@ async def speech_audio_response(
                 else:
                     pass
                 yield audio_bytes
+            if stream_resampler is not None and not stream_resampler.finished:
+                final_audio_bytes = encode_pcm(
+                    stream_resampler.finish(), stream_resampler.target_sample_rate
+                )
+                if final_audio_bytes:
+                    yield final_audio_bytes
+                else:
+                    pass
+            else:
+                pass
             active_request = False
             if stream_format == "audio":
                 speech_stream_outcomes.record(request_id, finish_reason, final_usage)
@@ -1982,16 +2036,26 @@ async def await_speech_response(
     request_id: str,
     response_format: str,
     speed: float,
+    sample_rate: int | None = None,
 ) -> SpeechResult:
-    speech_task = asyncio.create_task(
-        client.speech(
+    if sample_rate is None:
+        speech_coroutine = client.speech(
             gen_req,
             request_id=request_id,
             response_format=response_format,
             speed=speed,
             allow_format_fallback=False,
         )
-    )
+    else:
+        speech_coroutine = client.speech(
+            gen_req,
+            request_id=request_id,
+            response_format=response_format,
+            sample_rate=sample_rate,
+            speed=speed,
+            allow_format_fallback=False,
+        )
+    speech_task = asyncio.create_task(speech_coroutine)
     disconnect_task = asyncio.create_task(wait_for_request_disconnect(request))
     aborted = False
     try:
