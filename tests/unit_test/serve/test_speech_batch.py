@@ -26,6 +26,7 @@ CONTEXT_LENGTH_ERROR = (
 class RecordingBatchSpeechClient:
     def __init__(self) -> None:
         self.requests: list[Any] = []
+        self.sample_rates: list[int | None] = []
 
     def health(self) -> dict[str, Any]:
         return {"running": True}
@@ -36,15 +37,18 @@ class RecordingBatchSpeechClient:
         *,
         request_id: str,
         response_format: str = "wav",
+        sample_rate: int | None = None,
         speed: float = 1.0,
         allow_format_fallback: bool = True,
     ) -> SpeechResult:
         del request_id, speed, allow_format_fallback
         self.requests.append(request)
+        self.sample_rates.append(sample_rate)
         return SpeechResult(
             audio_bytes=f"audio:{request.prompt}".encode(),
             mime_type=f"audio/{response_format}",
             format=response_format,
+            sample_rate=sample_rate or 24000,
             finish_reason="length" if request.prompt == "third" else "stop",
         )
 
@@ -209,6 +213,27 @@ def test_batch_speech_preserves_order_and_item_errors() -> None:
     assert body["results"][3]["error"]["param"] == "items.3.input"
     assert body["results"][4]["error"]["param"] == "items.4.input"
     assert [request.prompt for request in client_impl.requests] == ["first", "third"]
+
+
+def test_batch_speech_supports_default_and_item_output_sample_rates() -> None:
+    client_impl = RecordingBatchSpeechClient()
+    client = TestClient(create_app(client_impl, model_name="tts"))
+
+    response = client.post(
+        "/v1/audio/speech/batch",
+        json={
+            "sample_rate": 8000,
+            "items": [
+                {"input": "first"},
+                {"input": "second", "sample_rate": 16000},
+            ],
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert [result["sample_rate"] for result in body["results"]] == [8000, 16000]
+    assert client_impl.sample_rates == [8000, 16000]
 
 
 def test_batch_speech_rejects_invalid_envelope_before_item_work() -> None:

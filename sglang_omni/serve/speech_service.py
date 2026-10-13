@@ -16,7 +16,12 @@ from urllib.parse import urlparse
 from pydantic import ValidationError
 
 from sglang_omni.client import ClientError, GenerateRequest, SamplingParams
-from sglang_omni.client.audio import audio_encoding_unavailable_reason
+from sglang_omni.client.audio import (
+    MAX_SAMPLE_RATE,
+    MIN_SAMPLE_RATE,
+    audio_encoding_unavailable_reason,
+    audio_sample_rate_unavailable_reason,
+)
 from sglang_omni.config.schema import MAX_SPEECH_INPUT_CHARS, CustomVoiceConfig
 from sglang_omni.preprocessing.base import MediaIO
 from sglang_omni.preprocessing.resource_connector import MultiModalResourceConnector
@@ -331,6 +336,7 @@ class SpeechRequestValidator:
             pass
         updates["response_format"] = response_format
         updates["stream"] = stream
+        self.validate_output_sample_rate(response_format, request.sample_rate)
 
         if not TTS_SPEED_MIN <= float(request.speed) <= TTS_SPEED_MAX:
             raise bad_request(
@@ -641,13 +647,23 @@ class SpeechRequestValidator:
             uploaded_voice=prepared.uploaded_voice,
         )
         try:
-            result = await client.speech(
-                gen_req,
-                request_id=request_id,
-                response_format=prepared.request.response_format,
-                speed=prepared.request.speed,
-                allow_format_fallback=False,
-            )
+            if prepared.request.sample_rate is None:
+                result = await client.speech(
+                    gen_req,
+                    request_id=request_id,
+                    response_format=prepared.request.response_format,
+                    speed=prepared.request.speed,
+                    allow_format_fallback=False,
+                )
+            else:
+                result = await client.speech(
+                    gen_req,
+                    request_id=request_id,
+                    response_format=prepared.request.response_format,
+                    sample_rate=prepared.request.sample_rate,
+                    speed=prepared.request.speed,
+                    allow_format_fallback=False,
+                )
         except ClientError as exc:
             raise speech_generation_error(exc) from exc
         return SpeechBatchResult(
@@ -656,6 +672,7 @@ class SpeechRequestValidator:
             audio_data=base64.b64encode(result.audio_bytes).decode("ascii"),
             format=result.format,
             media_type=result.mime_type,
+            sample_rate=result.sample_rate,
             finish_reason=result.finish_reason,
         )
 
@@ -744,6 +761,7 @@ class SpeechRequestValidator:
     def validate_batch_defaults(self, batch: CreateSpeechBatchRequest) -> None:
         response_format = normalize_response_format(batch.response_format)
         self.validate_encoder_dependency(response_format)
+        self.validate_output_sample_rate(response_format, batch.sample_rate)
         if not TTS_SPEED_MIN <= float(batch.speed) <= TTS_SPEED_MAX:
             raise bad_request(
                 f"speed must be between {TTS_SPEED_MIN} and {TTS_SPEED_MAX}",
@@ -865,6 +883,7 @@ class SpeechRequestValidator:
             "initial_codec_chunk_frames",
             "token_count",
             "duration_tokens",
+            "sample_rate",
             "seed",
         ):
             if field_name in payload and payload[field_name] is not None:
@@ -976,6 +995,28 @@ class SpeechRequestValidator:
         message = audio_encoding_unavailable_reason(response_format)
         if message is not None:
             raise service_unavailable(message, param="response_format")
+        else:
+            pass
+
+    def validate_output_sample_rate(
+        self, response_format: str, sample_rate: int | None
+    ) -> None:
+        if sample_rate is None:
+            return
+        else:
+            pass
+        if not MIN_SAMPLE_RATE <= sample_rate <= MAX_SAMPLE_RATE:
+            raise bad_request(
+                f"sample_rate must be between {MIN_SAMPLE_RATE} and {MAX_SAMPLE_RATE}",
+                param="sample_rate",
+            )
+        else:
+            pass
+        unavailable_reason = audio_sample_rate_unavailable_reason(
+            response_format, sample_rate
+        )
+        if unavailable_reason is not None:
+            raise bad_request(unavailable_reason, param="sample_rate")
         else:
             pass
 

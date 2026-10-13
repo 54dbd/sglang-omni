@@ -6,14 +6,99 @@ import pytest
 from sglang_omni.client.audio import (
     FORMAT_MIME_TYPES,
     PYAV_ENCODE_CONFIGS,
+    StreamingAudioResampler,
     audio_to_base64,
     encode_audio,
     encode_pcm,
     encode_wav,
     encode_with_pyav,
+    resample_audio,
     resample_linear,
     to_numpy,
 )
+
+
+def test_streaming_resampler_matches_whole_audio_across_chunk_boundaries() -> None:
+    source_sample_rate = 24000
+    target_sample_rate = 8000
+    time = np.arange(2400, dtype=np.float32) / source_sample_rate
+    audio = np.sin(2 * np.pi * 440 * time).astype(np.float32)
+    expected = resample_audio(audio, source_sample_rate, target_sample_rate)
+    resampler = StreamingAudioResampler(source_sample_rate, target_sample_rate)
+
+    chunks = [
+        resampler.push(audio[:137]),
+        resampler.push(audio[137:999]),
+        resampler.push(audio[999:]),
+        resampler.finish(),
+    ]
+    actual = np.concatenate(chunks)
+
+    assert actual.shape == (800,)
+    assert np.array_equal(actual, expected)
+
+
+def test_streaming_resampler_matches_whole_audio_across_output_blocks() -> None:
+    source_sample_rate = 44100
+    target_sample_rate = 8000
+    audio = (
+        np.random.default_rng(0)
+        .uniform(-0.5, 0.5, source_sample_rate)
+        .astype(np.float32)
+    )
+    expected = resample_audio(audio, source_sample_rate, target_sample_rate)
+    resampler = StreamingAudioResampler(source_sample_rate, target_sample_rate)
+
+    chunks = [
+        resampler.push(audio[:123]),
+        resampler.push(audio[123:22000]),
+        resampler.push(audio[22000:]),
+        resampler.finish(),
+    ]
+    actual = np.concatenate(chunks)
+
+    assert actual.shape == (target_sample_rate,)
+    assert np.array_equal(actual, expected)
+
+
+def test_resample_audio_attenuates_frequencies_above_target_nyquist() -> None:
+    source_sample_rate = 24000
+    target_sample_rate = 8000
+    time = np.arange(source_sample_rate, dtype=np.float32) / source_sample_rate
+    audio = np.sin(2 * np.pi * 7000 * time).astype(np.float32)
+
+    resampled = resample_audio(audio, source_sample_rate, target_sample_rate)
+    root_mean_square = float(np.sqrt(np.mean(np.square(resampled))))
+
+    assert root_mean_square < 0.01
+
+
+def test_encode_audio_resamples_to_requested_output_rate() -> None:
+    source_sample_rate = 24000
+    target_sample_rate = 8000
+    audio = np.linspace(-0.5, 0.5, source_sample_rate, dtype=np.float32)
+
+    encoded, mime = encode_audio(
+        audio,
+        response_format="wav",
+        sample_rate=source_sample_rate,
+        target_sample_rate=target_sample_rate,
+    )
+    decoded_sample_rate, decoded = decode_audio(encoded)
+
+    assert mime == "audio/wav"
+    assert decoded_sample_rate == target_sample_rate
+    assert decoded.shape[-1] == target_sample_rate
+
+
+def test_encode_audio_rejects_requested_rate_unsupported_by_codec() -> None:
+    with pytest.raises(ValueError, match="not supported"):
+        encode_audio(
+            [0.0, 0.1],
+            response_format="opus",
+            sample_rate=24000,
+            target_sample_rate=44100,
+        )
 
 
 def stereo_test_signal() -> tuple[np.ndarray, int]:

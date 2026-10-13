@@ -18,6 +18,7 @@ from starlette.websockets import WebSocketState
 from sglang_omni.client import Client, ClientError
 from sglang_omni.client.audio import (
     DEFAULT_SAMPLE_RATE,
+    StreamingAudioResampler,
     apply_speed,
     encode_pcm,
     select_audio_delta,
@@ -373,12 +374,13 @@ class SpeechWebSocketSession:
         total_bytes = 0
         chunk_count = 0
         started = False
+        resampler: StreamingAudioResampler | None = None
         async for chunk in self.client.generate(gen_req, request_id=request_id):
             if chunk.audio_data is None:
                 continue
             else:
                 pass
-            sample_rate = chunk.sample_rate or DEFAULT_SAMPLE_RATE
+            source_sample_rate = chunk.sample_rate or DEFAULT_SAMPLE_RATE
             audio_data, emitted_samples = select_audio_delta(
                 chunk.audio_data,
                 emitted_samples=emitted_samples,
@@ -389,12 +391,30 @@ class SpeechWebSocketSession:
             else:
                 pass
             if self.config.speed != 1.0:
-                audio_data, sample_rate = apply_speed(
-                    audio_data, self.config.speed, sample_rate
+                audio_data, source_sample_rate = apply_speed(
+                    audio_data, self.config.speed, source_sample_rate
                 )
             else:
                 pass
-            audio_bytes = encode_pcm(audio_data, sample_rate)
+            if resampler is None:
+                resampler = StreamingAudioResampler(
+                    source_sample_rate,
+                    (
+                        self.config.sample_rate
+                        if self.config.sample_rate is not None
+                        else source_sample_rate
+                    ),
+                )
+            elif source_sample_rate != resampler.source_sample_rate:
+                raise RuntimeError(
+                    "Raw PCM speech stream sample rate changed from "
+                    f"{resampler.source_sample_rate} to {source_sample_rate}"
+                )
+            else:
+                pass
+            audio_bytes = encode_pcm(
+                resampler.push(audio_data), resampler.target_sample_rate
+            )
             if not audio_bytes:
                 continue
             else:
@@ -404,7 +424,7 @@ class SpeechWebSocketSession:
                     request_id=request_id,
                     sentence_index=sentence_index,
                     sentence=sentence,
-                    sample_rate=sample_rate,
+                    sample_rate=resampler.target_sample_rate,
                 )
                 started = True
             else:
@@ -412,6 +432,30 @@ class SpeechWebSocketSession:
             await self.send_audio_frame(audio_bytes, active_request_id=request_id)
             total_bytes += len(audio_bytes)
             chunk_count += 1
+        if resampler is not None:
+            final_audio_bytes = encode_pcm(
+                resampler.finish(), resampler.target_sample_rate
+            )
+            if final_audio_bytes:
+                if not started:
+                    await self.send_audio_start(
+                        request_id=request_id,
+                        sentence_index=sentence_index,
+                        sentence=sentence,
+                        sample_rate=resampler.target_sample_rate,
+                    )
+                    started = True
+                else:
+                    pass
+                await self.send_audio_frame(
+                    final_audio_bytes, active_request_id=request_id
+                )
+                total_bytes += len(final_audio_bytes)
+                chunk_count += 1
+            else:
+                pass
+        else:
+            pass
         if chunk_count == 0:
             raise ClientError("No audio output generated from the pipeline.")
         else:
@@ -433,13 +477,23 @@ class SpeechWebSocketSession:
             reference_descriptors=self.config_reference_descriptors(),
             uploaded_voice=self.config_uploaded_voice(),
         )
-        result = await self.client.speech(
-            gen_req,
-            request_id=request_id,
-            response_format=request.response_format,
-            speed=request.speed,
-            allow_format_fallback=False,
-        )
+        if request.sample_rate is None:
+            result = await self.client.speech(
+                gen_req,
+                request_id=request_id,
+                response_format=request.response_format,
+                speed=request.speed,
+                allow_format_fallback=False,
+            )
+        else:
+            result = await self.client.speech(
+                gen_req,
+                request_id=request_id,
+                response_format=request.response_format,
+                sample_rate=request.sample_rate,
+                speed=request.speed,
+                allow_format_fallback=False,
+            )
         if self.active_request_id == request_id:
             self.active_request_id = None
         else:

@@ -47,6 +47,7 @@ from sglang_omni.proto.session import (
 class EncodeAudioOptions(TypedDict, total=False):
     response_format: str
     sample_rate: int
+    target_sample_rate: int
     speed: float
     allow_format_fallback: bool
 
@@ -373,6 +374,7 @@ class Client:
         *,
         request_id: str,
         response_format: str = "wav",
+        sample_rate: int | None = None,
         speed: float = 1.0,
         allow_format_fallback: bool = True,
     ) -> SpeechResult:
@@ -382,7 +384,7 @@ class Client:
             ClientError: If the pipeline produces no audio output.
         """
         audio_chunks: list[object] = []
-        sample_rate: int | None = None
+        source_sample_rate: int | None = None
         last_chunk: GenerateChunk | None = None
         extra_params = dict(request.extra_params)
         extra_params.pop("stream", None)
@@ -394,7 +396,7 @@ class Client:
             else:
                 pass
             if chunk.sample_rate is not None:
-                sample_rate = chunk.sample_rate
+                source_sample_rate = chunk.sample_rate
             else:
                 pass
             last_chunk = chunk
@@ -416,8 +418,12 @@ class Client:
             "speed": speed,
             "allow_format_fallback": allow_format_fallback,
         }
+        if source_sample_rate is not None:
+            encode_kwargs["sample_rate"] = source_sample_rate
+        else:
+            pass
         if sample_rate is not None:
-            encode_kwargs["sample_rate"] = sample_rate
+            encode_kwargs["target_sample_rate"] = sample_rate
         else:
             pass
 
@@ -439,7 +445,9 @@ class Client:
             audio_bytes=audio_bytes,
             mime_type=mime_type,
             format=actual_format,
-            sample_rate=sample_rate,
+            sample_rate=(
+                sample_rate if sample_rate is not None else source_sample_rate
+            ),
             usage=last_chunk.usage if last_chunk else None,
             finish_reason=(
                 (last_chunk.reported_finish_reason or UNKNOWN_FINISH_REASON)

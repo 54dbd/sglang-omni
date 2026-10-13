@@ -42,6 +42,42 @@ def test_speech_service_rejects_non_string_input() -> None:
     assert exc_info.value.param == "input"
 
 
+@pytest.mark.parametrize("sample_rate", [True, "8000", 7999, 192001])
+def test_speech_service_rejects_invalid_output_sample_rate(sample_rate: object) -> None:
+    service = SpeechRequestValidator(default_model="tts")
+
+    with pytest.raises(SpeechAPIError) as exc_info:
+        service.parse_generation_request({"input": "hello", "sample_rate": sample_rate})
+
+    assert exc_info.value.status_code == 400
+    assert exc_info.value.param == "sample_rate"
+
+
+def test_speech_service_rejects_sample_rate_unsupported_by_codec() -> None:
+    service = SpeechRequestValidator(default_model="tts")
+
+    with pytest.raises(SpeechAPIError) as exc_info:
+        service.parse_generation_request(
+            {
+                "input": "hello",
+                "response_format": "opus",
+                "sample_rate": 44100,
+            }
+        )
+
+    assert exc_info.value.status_code == 400
+    assert exc_info.value.param == "sample_rate"
+
+
+def test_speech_sample_rate_does_not_reach_model_parameters() -> None:
+    service = SpeechRequestValidator(default_model="tts")
+    prepared = service.parse_generation_request({"input": "hello", "sample_rate": 8000})
+    generate_request = service.build_generate_request(prepared.request, validate=False)
+
+    assert prepared.request.sample_rate == 8000
+    assert "sample_rate" not in generate_request.metadata["tts_params"]
+
+
 def test_speech_generation_uses_served_model_and_default_voice() -> None:
     service = SpeechRequestValidator(default_model="tts")
     prepared = service.parse_generation_request({"input": "hello"})
