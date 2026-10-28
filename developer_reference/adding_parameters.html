@@ -1,0 +1,961 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Adding a Parameter &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3476fdda"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/adding_parameters';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=d7738e8a"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=7979a72f"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Communication" href="communication.html" />
+    <link rel="prev" title="Config" href="config.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.7" />
+    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_npu.html">🚀 Installation — Ascend NPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_cpu.html">🚀 Installation — Intel CPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_musa.html">🚀 Installation — MUSA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron3_5_asr.html">Nemotron 3.5 ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minicpm_o.html">MiniCPM-o</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron_voicechat.html">NemotronLabs VoiceChat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/personaplex.html">PersonaPlex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_cosyvoice3.html">Fun-CosyVoice3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/auk.html">AuK</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology.html">Process Topology, Replicas, and GPU Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">SGLang-Omni Rust Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/qwen3_tts_leading_silence.html">Qwen3-TTS Base: Leading Silence in X-Vector Voice Cloning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Adding a Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bump_version.html">Bumping the SGLang Pin</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/adding_parameters.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/adding_parameters.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/adding_parameters.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/adding_parameters.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Adding a Parameter</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-question-who-consumes-the-value">First question: who consumes the value?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-1-a-factory-kwarg-used-by-one-model">Case 1: a factory kwarg used by one model</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-a-model-specific-parameter">Validating a model-specific parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-2-a-factory-kwarg-shared-across-models">Case 2: a factory kwarg shared across models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-3-an-engine-serverargs-setting">Case 3: an engine (ServerArgs) setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-4-a-stage-placement-setting">Case 4: a stage-placement setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-5-a-pipeline-level-setting">Case 5: a pipeline-level setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#values-users-do-not-set">Values users do not set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-validation-goes-the-one-site-rule">Where validation goes: the one-site rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-for-a-new-parameter">Checklist for a new parameter</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="adding-a-parameter">
+<h1>Adding a Parameter<a class="headerlink" href="#adding-a-parameter" title="Link to this heading">#</a></h1>
+<p>A practical guide for wiring a new setting into SGLang-Omni’s configuration
+surface: where it belongs, how it is declared and validated, and how a value
+travels from YAML or the command line into the code that reads it. For the
+reference description of the config layer itself, see <a class="reference internal" href="config.html"><span class="std std-doc">Config</span></a>.</p>
+<section id="first-question-who-consumes-the-value">
+<h2>First question: who consumes the value?<a class="headerlink" href="#first-question-who-consumes-the-value" title="Link to this heading">#</a></h2>
+<p>Stage settings are grouped by consumer, and the group decides everything else
+— the spelling, the validation site, and the code that receives the value.
+There are exactly three consumers:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Consumer</p></th>
+<th class="head"><p>Where it lives</p></th>
+<th class="head"><p>Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>The parent process (placement, process planning)</p></td>
+<td><p>Stage top level</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">tp_size</span></code>, <code class="docutils literal notranslate"><span class="pre">process</span></code>, <code class="docutils literal notranslate"><span class="pre">gpu_memory_fraction</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>The stage factory (constructor kwargs)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">factory.*</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">max_concurrency</span></code>, <code class="docutils literal notranslate"><span class="pre">dtype</span></code>, <code class="docutils literal notranslate"><span class="pre">prefill_coalesce_requests</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>The SGLang engine (ServerArgs)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">engine.*</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code>, <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code>, <code class="docutils literal notranslate"><span class="pre">disable_radix_cache</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Every group answers to the same two spellings — one path language, written
+twice:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># YAML: the stages: mapping, keyed by stage name</span>
+<span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tts_engine</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">tp_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">max_concurrency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mem_fraction_static</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># CLI: dotted flags, the stages. prefix implied</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span>--config<span class="w"> </span>omni.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tts_engine.tp_size<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tts_engine.factory.max_concurrency<span class="w"> </span><span class="m">8</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tts_engine.engine.mem_fraction_static<span class="w"> </span><span class="m">0</span>.7
+</pre></div>
+</div>
+<p>Both spellings become per-leaf patches and resolve through the same machinery,
+so precedence (CLI beats file beats model default), duplicate detection, and
+<code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">config</span> <span class="pre">explain</span></code> provenance all come for free. You never write any of
+that yourself.</p>
+</section>
+<section id="case-1-a-factory-kwarg-used-by-one-model">
+<h2>Case 1: a factory kwarg used by one model<a class="headerlink" href="#case-1-a-factory-kwarg-used-by-one-model" title="Link to this heading">#</a></h2>
+<p>Most parameters are this case, and it requires <strong>no schema change at all</strong>.
+The <code class="docutils literal notranslate"><span class="pre">factory</span></code> group accepts undeclared keys and passes them through untouched;
+the factory’s signature is the check.</p>
+<ol class="arabic simple">
+<li><p>Add the parameter to your stage factory’s signature, with its default:</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sglang_omni/models/dots_tts/stages.py</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_vocoder_executor</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">stream_slots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="o">...</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DotsTTSStreamingVocoder</span><span class="p">:</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>There is no step 2. Users can immediately set it:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>...<span class="w"> </span>--vocoder.factory.stream_slots<span class="w"> </span><span class="m">8</span>
+</pre></div>
+</div>
+<p>The runtime overlays <code class="docutils literal notranslate"><span class="pre">factory.*</span></code> values onto the author’s kwargs by name and
+<strong>refuses a key the factory does not accept</strong> — a typo like
+<code class="docutils literal notranslate"><span class="pre">--vocoder.factory.stream_slotz</span> <span class="pre">8</span></code> fails at launch with the stage and
+parameter named. This only works because factories declare every parameter
+explicitly: never add a <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code> catch-all to a stage factory, it turns
+both typos and silently-ignored settings into no-ops.</p>
+<section id="validating-a-model-specific-parameter">
+<h3>Validating a model-specific parameter<a class="headerlink" href="#validating-a-model-specific-parameter" title="Link to this heading">#</a></h3>
+<p>A free-form key is not locked out of the mainstream validation pipeline.
+When the parameter has rules worth declaring — a range, an enum, eager
+validation — type it, exactly as a shared field would be: subclass the group,
+declare the field with its static constraints, and type the stage with it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">VocoderFactoryArgs</span><span class="p">(</span><span class="n">FactoryArgs</span><span class="p">):</span>
+    <span class="n">stream_slots</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">VocoderStageConfig</span><span class="p">(</span><span class="n">StageConfig</span><span class="p">):</span>
+    <span class="n">factory</span><span class="p">:</span> <span class="n">VocoderFactoryArgs</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">VocoderFactoryArgs</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyPipelineConfig</span><span class="p">(</span><span class="n">PipelineConfig</span><span class="p">):</span>
+    <span class="n">stage_config_types</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">[</span><span class="n">StageConfig</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"vocoder"</span><span class="p">:</span> <span class="n">VocoderStageConfig</span><span class="p">,</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">stages.vocoder.factory.stream_slots</span></code> is now a typed path with identical
+treatment to a field declared on <code class="docutils literal notranslate"><span class="pre">FactoryArgs</span></code> itself, scoped to one stage:
+the static range is enforced at resolution, the lossless conversion rule
+applies to CLI text and YAML scalars, and <code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">explain</span></code> enumerates it.
+This is the same pattern <code class="docutils literal notranslate"><span class="pre">EngineStageConfig</span></code> uses, and the same principle as
+the shared groups: constraints are declarations on fields, not hand-written
+checks. (A subclass carrying real fields is not an empty shell.)</p>
+<p>The other two sites cover what a field declaration cannot express — both run
+at resolve time too, because the resolver rebuilds and re-validates the
+pipeline class on every merge:</p>
+<ul class="simple">
+<li><p><strong>Cross-field and cross-stage rules</strong> go in the pipeline class’s
+<code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> — Ming-TTS validates its audio-decode cadence and batch
+contract there, and Ming-Omni its GPU-collision rule.</p></li>
+<li><p><strong>Rules that need the consumer’s runtime state</strong> stay in the consumer —
+the dots vocoder refuses a <code class="docutils literal notranslate"><span class="pre">stream_slots</span></code> that disagrees with the latent
+engine’s admission limit, a relationship only known at launch.</p></li>
+</ul>
+<p>A parameter with no rules beyond “the factory accepts it” needs none of
+this; the signature default and the built-in unknown-kwarg refusal are
+enough.</p>
+</section>
+</section>
+<section id="case-2-a-factory-kwarg-shared-across-models">
+<h2>Case 2: a factory kwarg shared across models<a class="headerlink" href="#case-2-a-factory-kwarg-shared-across-models" title="Link to this heading">#</a></h2>
+<p>When a knob is common enough that several pipelines tune it — batching,
+concurrency, coalescing — declare it on <code class="docutils literal notranslate"><span class="pre">FactoryArgs</span></code> in
+<code class="docutils literal notranslate"><span class="pre">sglang_omni/config/schema.py</span></code> so it validates eagerly and shows up in path
+enumeration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">FactoryArgs</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="n">max_concurrency</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">prefill_coalesce_wait_ms</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gt</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Rules for a declared field:</p>
+<ul class="simple">
+<li><p><strong>Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, meaning “unset”.</strong> The factory’s own signature default
+stays in charge; only a set value is passed through. Never duplicate the
+factory’s default into the schema — that would be a second source of truth.</p></li>
+<li><p><strong>Declare the range statically</strong> with <code class="docutils literal notranslate"><span class="pre">Field(ge=/gt=/lt=/le=)</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">Literal[...]</span></code> for a string enum, or <code class="docutils literal notranslate"><span class="pre">Field(min_length=1)</span></code> for a non-empty
+string. Pydantic enforces the constraint at construction and resolution,
+and path compilation carries the same constraint into CLI/YAML conversion —
+one declaration, every channel. Do not write the range as a hand-rolled
+<code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> check; that is reserved for rules a declaration cannot
+express (see below).</p></li>
+<li><p><strong>Type shape is already handled.</strong> Conversion is lossless-only: an int fits
+a float field and <code class="docutils literal notranslate"><span class="pre">0</span></code>/<code class="docutils literal notranslate"><span class="pre">1</span></code> fit a bool field, but a bool is refused on a
+numeric field and a float is refused on an int field, for CLI text and
+native YAML scalars alike. You get this for free.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> on the group is only for what a declaration cannot say:
+cross-field rules, or advisory warnings (<code class="docutils literal notranslate"><span class="pre">prefill_coalesce_requests=1</span></code> warns
+that the value is a no-op).</p>
+</section>
+<section id="case-3-an-engine-serverargs-setting">
+<h2>Case 3: an engine (ServerArgs) setting<a class="headerlink" href="#case-3-an-engine-serverargs-setting" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">engine.*</span></code> maps onto SGLang’s ServerArgs for the stage’s engine, and only
+exists on engine stages — a stage declares itself one by using
+<code class="docutils literal notranslate"><span class="pre">EngineStageConfig</span></code> (via <code class="docutils literal notranslate"><span class="pre">stage_config_types</span></code> in the pipeline class). Writing
+<code class="docutils literal notranslate"><span class="pre">engine.*</span></code> on any other stage is a path error, so users cannot set values
+that nothing would read.</p>
+<ul class="simple">
+<li><p>Any ServerArgs key already works as a free-form passthrough:
+<code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.disable_radix_cache</span> <span class="pre">true</span></code>. Whether the key exists is
+SGLang’s call, made when the engine starts.</p></li>
+<li><p>Declare a key on <code class="docutils literal notranslate"><span class="pre">EngineArgs</span></code> only when it is commonly tuned and deserves
+eager validation, e.g. <code class="docutils literal notranslate"><span class="pre">mem_fraction_static:</span> <span class="pre">Field(gt=0,</span> <span class="pre">lt=1)</span></code>.</p></li>
+</ul>
+<p>Consumers read the set keys with <code class="docutils literal notranslate"><span class="pre">stage.engine.overrides()</span></code> — a dict of
+exactly what was written, so SGLang’s own defaults govern everything else.</p>
+</section>
+<section id="case-4-a-stage-placement-setting">
+<h2>Case 4: a stage-placement setting<a class="headerlink" href="#case-4-a-stage-placement-setting" title="Link to this heading">#</a></h2>
+<p>Fields read by the parent process before any stage code runs — placement,
+process grouping, TP shape — live at the stage top level in <code class="docutils literal notranslate"><span class="pre">StageConfig</span></code>.
+Add one only when the launcher or planner genuinely consumes it. Same
+validation split as everywhere else: static <code class="docutils literal notranslate"><span class="pre">Field</span></code> constraints for ranges
+(<code class="docutils literal notranslate"><span class="pre">tp_size:</span> <span class="pre">Field(default=1,</span> <span class="pre">ge=1)</span></code>), <code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> for cross-field shape
+(a TP stage’s <code class="docutils literal notranslate"><span class="pre">gpu</span></code> list must match <code class="docutils literal notranslate"><span class="pre">tp_size</span></code> and be unique).</p>
+<p>Do <strong>not</strong> re-check these rules downstream. The planner and topology walker
+trust a validated config; a constraint has exactly one site.</p>
+<p><code class="docutils literal notranslate"><span class="pre">device</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu_id</span></code> are the special case of this rule: placement owns
+<code class="docutils literal notranslate"><span class="pre">gpu_id</span></code>, a factory may only receive a device <em>type</em>, and the factory resolves
+the pair through one shared helper. See “Device and GPU placement contract” in
+<a class="reference internal" href="config.html"><span class="std std-doc">config.md</span></a> before touching either.</p>
+</section>
+<section id="case-5-a-pipeline-level-setting">
+<h2>Case 5: a pipeline-level setting<a class="headerlink" href="#case-5-a-pipeline-level-setting" title="Link to this heading">#</a></h2>
+<p>Whole-pipeline values (<code class="docutils literal notranslate"><span class="pre">model_path</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">placement.*</span></code>) are top-level
+<code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> fields, written without a stage prefix (<code class="docutils literal notranslate"><span class="pre">--model_path</span> <span class="pre">...</span></code>,
+YAML top level). Model-specific pipeline classes may add their own fields the
+same way (see <code class="docutils literal notranslate"><span class="pre">MossTTSLocalPipelineConfig</span></code>’s cache and cuda-graph fields).
+Cross-stage invariants for one model belong in that pipeline class’s
+<code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> — e.g. Ming-Omni refusing a talker GPU that collides with
+the thinker’s TP range.</p>
+</section>
+<section id="values-users-do-not-set">
+<h2>Values users do not set<a class="headerlink" href="#values-users-do-not-set" title="Link to this heading">#</a></h2>
+<p>Two mechanisms exist for values that are derived rather than configured.
+Reach for them last.</p>
+<p><strong>Author-derived factory kwargs</strong> — <code class="docutils literal notranslate"><span class="pre">stage_factory_kwargs(stage_name)</span></code> on the
+pipeline class returns launch-time constructor kwargs for one stage. Use it
+when the pipeline author knows better than a static default (e.g. qwen3-tts
+pinning deterministic-inference settings). Two hard rules: the config channel
+wins per key (an explicit <code class="docutils literal notranslate"><span class="pre">factory.*</span></code> value overrides the hook’s), and the
+hook must not read <em>other</em> stages’ config — cross-stage sharing is the user’s
+declaration to make, in YAML:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># shared: writes one value into several stages, by selector</span>
+<span class="nt">shared</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">select</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">engine</span><span class="p">:</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">}</span><span class="w">          </span><span class="c1"># every SGLang engine stage</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mem_fraction_static</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.6</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">select</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">stages</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">talker</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">vocoder</span><span class="p p-Indicator">]}</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bfloat16</span>
+</pre></div>
+</div>
+<p>An explicit per-stage write always outranks a <code class="docutils literal notranslate"><span class="pre">shared:</span></code> expansion.</p>
+<p><strong>Post-merge derivation</strong> — a value that only exists after every source has
+been merged (e.g. <code class="docutils literal notranslate"><span class="pre">disable_custom_all_reduce</span></code> derived from the resolved TP
+size and GPU topology in <code class="docutils literal notranslate"><span class="pre">serve</span></code>). A derivation is a fallback: it must only
+fill keys no source set, never override an explicit value, and
+<code class="docutils literal notranslate"><span class="pre">config</span> <span class="pre">resolve</span></code>/<code class="docutils literal notranslate"><span class="pre">explain</span></code> must run the same derivation so the preview equals
+the launch. If you find yourself wanting a third such mechanism, stop and ask
+whether the value can simply be a config default.</p>
+</section>
+<section id="where-validation-goes-the-one-site-rule">
+<h2>Where validation goes: the one-site rule<a class="headerlink" href="#where-validation-goes-the-one-site-rule" title="Link to this heading">#</a></h2>
+<p>Every rule has exactly one home, chosen by what the rule needs to see:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Rule needs</p></th>
+<th class="head"><p>Site</p></th>
+<th class="head"><p>Example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Only the value</p></td>
+<td><p>Static <code class="docutils literal notranslate"><span class="pre">Field</span></code> constraint / <code class="docutils literal notranslate"><span class="pre">Literal</span></code> — on the shared group, or a per-stage group subclass for one model</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mem_fraction_static:</span> <span class="pre">Field(gt=0,</span> <span class="pre">lt=1)</span></code>; <code class="docutils literal notranslate"><span class="pre">VocoderFactoryArgs.stream_slots</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>The right conversion</p></td>
+<td><p>Nothing — lossless coercion is built in</p></td>
+<td><p>bool refused on int fields</p></td>
+</tr>
+<tr class="row-even"><td><p>Sibling fields on one object</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">model_post_init</span></code> on that model</p></td>
+<td><p>TP <code class="docutils literal notranslate"><span class="pre">gpu</span></code> list matches <code class="docutils literal notranslate"><span class="pre">tp_size</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Several stages of one pipeline</p></td>
+<td><p>The pipeline class’s <code class="docutils literal notranslate"><span class="pre">model_post_init</span></code></p></td>
+<td><p>Ming GPU-collision check; Ming-TTS audio-decode contract</p></td>
+</tr>
+<tr class="row-even"><td><p>The consumer’s runtime state</p></td>
+<td><p>The consumer, at the point of use</p></td>
+<td><p>vocoder <code class="docutils literal notranslate"><span class="pre">stream_slots</span></code> vs. latent engine</p></td>
+</tr>
+<tr class="row-odd"><td><p>The factory’s parameter list</p></td>
+<td><p>Nothing — the signature check is built in</p></td>
+<td><p>unknown <code class="docutils literal notranslate"><span class="pre">factory.*</span></code> key refused</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Anti-patterns, each removed from this codebase at least once — do not
+reintroduce them:</p>
+<ul class="simple">
+<li><p><strong>A second validation site.</strong> If serve pre-checks a range the schema also
+checks, one of them is wrong the day the rule changes.</p></li>
+<li><p><strong>A capability whitelist.</strong> “Factories that support X” lists go stale; the
+factory signature already says what it accepts.</p></li>
+<li><p><strong>Reserved fields and speculative enums.</strong> Every field and every enum
+member must have a consumer today.</p></li>
+<li><p><strong>Empty subclass shells.</strong> A <code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> subclass must carry a real
+difference (like <code class="docutils literal notranslate"><span class="pre">EngineStageConfig.engine_stage</span></code>); a shell that only
+renames is noise.</p></li>
+<li><p><strong>Compat for unreleased spellings.</strong> Migration hints cover spellings that
+shipped on <code class="docutils literal notranslate"><span class="pre">main</span></code>; an abstraction that only ever existed on your branch is
+deleted without a trace.</p></li>
+<li><p><strong>Topology in user config.</strong> Which stages exist, how they route, where
+requests enter — that is the model’s <code class="docutils literal notranslate"><span class="pre">config.py</span></code>, never YAML or CLI.</p></li>
+</ul>
+</section>
+<section id="checklist-for-a-new-parameter">
+<h2>Checklist for a new parameter<a class="headerlink" href="#checklist-for-a-new-parameter" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Name the consumer; that names the group and the spelling.</p></li>
+<li><p>Free-form first: a model-specific factory kwarg needs only a signature
+parameter. Declare on <code class="docutils literal notranslate"><span class="pre">FactoryArgs</span></code>/<code class="docutils literal notranslate"><span class="pre">EngineArgs</span></code> only for cross-model
+knobs.</p></li>
+<li><p>Ranges and enums are static declarations (<code class="docutils literal notranslate"><span class="pre">Field(...)</span></code>, <code class="docutils literal notranslate"><span class="pre">Literal</span></code>), not
+code.</p></li>
+<li><p>Cross-field rules go in the owning model’s <code class="docutils literal notranslate"><span class="pre">model_post_init</span></code>; nothing is
+checked twice.</p></li>
+<li><p>Verify the whole surface end to end:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>config<span class="w"> </span>resolve<span class="w"> </span>--model-path<span class="w"> </span>&lt;model&gt;<span class="w"> </span>--&lt;stage&gt;.factory.&lt;name&gt;<span class="w"> </span>&lt;value&gt;
+sgl-omni<span class="w"> </span>config<span class="w"> </span>explain<span class="w"> </span>stages.&lt;stage&gt;.factory.&lt;name&gt;<span class="w"> </span>--model-path<span class="w"> </span>&lt;model&gt;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">resolve</span></code> must show the value where the consumer will read it, and <code class="docutils literal notranslate"><span class="pre">explain</span></code>
+must attribute it to your source. Both commands build the identical patch set
+a launch builds, so if the preview is right, the launch is right.</p>
+<ol class="arabic simple" start="6">
+<li><p>Tests: pin the acceptance path (value reaches the consumer) and the
+refusal path (out-of-range and, for free-form keys, the unknown-kwarg
+refusal), in the suite of the layer that owns the rule.</p></li>
+</ol>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="config.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Config</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="communication.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Communication</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-question-who-consumes-the-value">First question: who consumes the value?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-1-a-factory-kwarg-used-by-one-model">Case 1: a factory kwarg used by one model</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#validating-a-model-specific-parameter">Validating a model-specific parameter</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-2-a-factory-kwarg-shared-across-models">Case 2: a factory kwarg shared across models</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-3-an-engine-serverargs-setting">Case 3: an engine (ServerArgs) setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-4-a-stage-placement-setting">Case 4: a stage-placement setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-5-a-pipeline-level-setting">Case 5: a pipeline-level setting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#values-users-do-not-set">Values users do not set</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-validation-goes-the-one-site-rule">Where validation goes: the one-site rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checklist-for-a-new-parameter">Checklist for a new parameter</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Oct 28, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

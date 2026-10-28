@@ -1,0 +1,1116 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Config &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3476fdda"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/config';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=d7738e8a"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=7979a72f"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Adding a Parameter" href="adding_parameters.html" />
+    <link rel="prev" title="Pipeline Overview" href="pipeline.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.7" />
+    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_npu.html">🚀 Installation — Ascend NPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_cpu.html">🚀 Installation — Intel CPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_musa.html">🚀 Installation — MUSA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron3_5_asr.html">Nemotron 3.5 ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minicpm_o.html">MiniCPM-o</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron_voicechat.html">NemotronLabs VoiceChat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/personaplex.html">PersonaPlex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_cosyvoice3.html">Fun-CosyVoice3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/auk.html">AuK</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology.html">Process Topology, Replicas, and GPU Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">SGLang-Omni Rust Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/qwen3_tts_leading_silence.html">Qwen3-TTS Base: Leading Silence in X-Vector Voice Cloning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adding_parameters.html">Adding a Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bump_version.html">Bumping the SGLang Pin</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/config.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/config.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/config.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/config.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Config</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#declarative-config">Declarative Config</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consumer-groups">Consumer Groups</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-values-yaml-and-cli">Setting Values: YAML and CLI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stageconfig-reference"><code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipelineconfig-reference"><code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> Reference</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-fusion">Stage Fusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-values-reach-a-factory">How Values Reach a Factory</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-and-gpu-placement-contract">Device and GPU placement contract</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-prep-and-runner">Runtime Prep and Runner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor-parallelism">Tensor Parallelism</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="config">
+<h1>Config<a class="headerlink" href="#config" title="Link to this heading">#</a></h1>
+<p>SGLang-Omni uses declarative config as the contract between model-specific
+pipeline definitions and the model-agnostic runtime. <code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> describes
+the whole pipeline: model path, stage list, endpoints, and relay backend.
+<code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> describes one logical stage: how to construct it, where it runs,
+where its normal results go, and whether it participates in fan-in or streaming
+edges.</p>
+<p>The config layer is intentionally static. It should make topology, placement,
+and stage construction visible before the runtime starts; request-time behavior
+belongs in stages, schedulers, model runners, and model-local payload logic.</p>
+<section id="declarative-config">
+<h2>Declarative Config<a class="headerlink" href="#declarative-config" title="Link to this heading">#</a></h2>
+<p>Pipelines are declared with <code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> and <code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> in the model’s
+<code class="docutils literal notranslate"><span class="pre">config.py</span></code>. Stage topology — which stages exist, how they route, where
+requests enter — lives here and only here; config files and CLI flags override
+settings on these stages but never add or remove them.</p>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Every non-TP stage must declare `process` explicitly — there is no implicit</span>
+<span class="c1"># default. Each stage below runs in its own OS process; multiple stages can</span>
+<span class="c1"># share an OS process by giving them the same `process` value (see</span>
+<span class="c1"># `Qwen3OmniSpeechColocatedPipelineConfig` for that pattern).</span>
+<span class="n">stages</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">StageConfig</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"preprocessing"</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="s2">"preprocessing"</span><span class="p">,</span>
+        <span class="n">factory_path</span><span class="o">=</span><span class="s2">"...create_preprocessing_executor"</span><span class="p">,</span>
+        <span class="nb">next</span><span class="o">=</span><span class="p">[</span><span class="s2">"image_encoder"</span><span class="p">,</span> <span class="s2">"audio_encoder"</span><span class="p">,</span> <span class="s2">"mm_aggregate"</span><span class="p">],</span>
+        <span class="n">project_payload</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"image_encoder"</span><span class="p">:</span> <span class="s2">"...project_preprocessing_to_image_encoder"</span><span class="p">,</span>
+            <span class="s2">"audio_encoder"</span><span class="p">:</span> <span class="s2">"...project_preprocessing_to_audio_encoder"</span><span class="p">,</span>
+            <span class="s2">"mm_aggregate"</span><span class="p">:</span> <span class="s2">"...project_preprocessing_to_mm_aggregate"</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">),</span>
+    <span class="n">StageConfig</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"mm_aggregate"</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="s2">"mm_aggregate"</span><span class="p">,</span>
+        <span class="n">factory_path</span><span class="o">=</span><span class="s2">"...create_aggregate_executor"</span><span class="p">,</span>
+        <span class="n">wait_for</span><span class="o">=</span><span class="p">[</span><span class="s2">"preprocessing"</span><span class="p">,</span> <span class="s2">"image_encoder"</span><span class="p">,</span> <span class="s2">"audio_encoder"</span><span class="p">],</span>
+        <span class="n">merge_fn</span><span class="o">=</span><span class="s2">"...merge_for_thinker"</span><span class="p">,</span>
+        <span class="nb">next</span><span class="o">=</span><span class="s2">"thinker"</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">EngineStageConfig</span><span class="p">(</span>               <span class="c1"># drives an SGLang engine, so engine.* exists</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"thinker"</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="s2">"thinker"</span><span class="p">,</span>
+        <span class="n">factory_path</span><span class="o">=</span><span class="s2">"...create_sglang_thinker_executor_from_config"</span><span class="p">,</span>
+        <span class="n">factory</span><span class="o">=</span><span class="n">FactoryArgs</span><span class="p">(</span><span class="n">max_seq_len</span><span class="o">=</span><span class="mi">8192</span><span class="p">),</span>
+        <span class="n">gpu</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="nb">next</span><span class="o">=</span><span class="p">[</span><span class="s2">"decode"</span><span class="p">,</span> <span class="s2">"talker_ar"</span><span class="p">],</span>
+        <span class="n">stream_to</span><span class="o">=</span><span class="p">[</span><span class="s2">"talker_ar"</span><span class="p">],</span>
+    <span class="p">),</span>
+    <span class="n">StageConfig</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">"decode"</span><span class="p">,</span>
+        <span class="n">process</span><span class="o">=</span><span class="s2">"decode"</span><span class="p">,</span>
+        <span class="n">factory_path</span><span class="o">=</span><span class="s2">"...create_decode_executor"</span><span class="p">,</span>
+        <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="consumer-groups">
+<h2>Consumer Groups<a class="headerlink" href="#consumer-groups" title="Link to this heading">#</a></h2>
+<p>Stage settings are grouped by the module that consumes them:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Group</p></th>
+<th class="head"><p>Consumer</p></th>
+<th class="head"><p>Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>stage top level</p></td>
+<td><p>parent process: placement, process planning, wiring</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code>, <code class="docutils literal notranslate"><span class="pre">tp_size</span></code>, <code class="docutils literal notranslate"><span class="pre">process</span></code>, <code class="docutils literal notranslate"><span class="pre">gpu_memory_fraction</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">engine.*</span></code></p></td>
+<td><p>SGLang <code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> (only on <code class="docutils literal notranslate"><span class="pre">EngineStageConfig</span></code> stages)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code>, <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code>, <code class="docutils literal notranslate"><span class="pre">disable_cuda_graph</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">factory.*</span></code></p></td>
+<td><p>the stage factory’s signature</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dtype</span></code>, <code class="docutils literal notranslate"><span class="pre">max_seq_len</span></code>, <code class="docutils literal notranslate"><span class="pre">max_concurrency</span></code>, <code class="docutils literal notranslate"><span class="pre">enable_async_decode</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each group declares its commonly tuned fields, which validate eagerly. <strong>Any
+other key passes through untouched</strong>: the group vocabularies belong to their
+consumers, so the entry side never format-checks unknown keys. A free-form
+<code class="docutils literal notranslate"><span class="pre">factory.*</span></code> key reaches the stage factory under its own name; a free-form
+<code class="docutils literal notranslate"><span class="pre">engine.*</span></code> key travels in the <code class="docutils literal notranslate"><span class="pre">server_args_overrides</span></code> mapping to SGLang,
+which rules on it. This is how factory-specific knobs are passed — what used
+to be a <code class="docutils literal notranslate"><span class="pre">factory_args</span></code> entry is now written under <code class="docutils literal notranslate"><span class="pre">factory.*</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">latent_engine</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">num_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">          </span><span class="c1"># not a declared FactoryArgs field; passed to the</span>
+<span class="w">                            </span><span class="c1"># factory as num_steps=4, validated by its signature</span>
+</pre></div>
+</div>
+<p>A value the factory does not accept is an error at stage construction, not a
+silent no-op.</p>
+</section>
+<section id="setting-values-yaml-and-cli">
+<h2>Setting Values: YAML and CLI<a class="headerlink" href="#setting-values-yaml-and-cli" title="Link to this heading">#</a></h2>
+<p>There are exactly two user-facing spellings of one path language.</p>
+<p><strong>YAML</strong> — the <code class="docutils literal notranslate"><span class="pre">stages:</span></code> mapping, keyed by stage name:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">config_cls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MossTTSPipelineConfig</span>
+<span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenMOSS-Team/MOSS-TTS</span>
+
+<span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tts_engine</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">tp_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">engine</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mem_fraction_static</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.7</span>
+<span class="w">  </span><span class="nt">vocoder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">dtype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bfloat16</span>
+</pre></div>
+</div>
+<p>Entries merge by name: a field the file does not write keeps the model’s
+default. Naming a stage the config class does not define is an error that
+lists the real stage names.</p>
+<p><strong>CLI</strong> — dotted flags with the <code class="docutils literal notranslate"><span class="pre">stages.</span></code> prefix implied; the flag starts
+from the stage name exactly as the mapping does:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--config<span class="w"> </span>omni.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tts_engine.tp_size<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--tts_engine.engine.mem_fraction_static<span class="w"> </span><span class="m">0</span>.7<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--vocoder.factory.dtype<span class="w"> </span>bfloat16<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--vocoder.process<span class="w"> </span>vocoder
+</pre></div>
+</div>
+<p>CLI text is coerced by the declared field type; free-form group keys fall
+back to YAML scalar parsing (<code class="docutils literal notranslate"><span class="pre">true</span></code> → bool, <code class="docutils literal notranslate"><span class="pre">7</span></code> → int). Writing one path
+twice at the same precedence is refused, never silently last-one-wins.
+The command line outranks the config file; an explicit dotted path outranks
+the broadcast flag below.</p>
+<p><strong>Shared values</strong> — the <code class="docutils literal notranslate"><span class="pre">shared:</span></code> selector list writes one value into several
+stages at once:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">shared</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">select</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">stages</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">preprocessing</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">latent_engine</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># or engine: true, exclude: [...]</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">num_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+<p>The entry expands to one patch per matched stage before resolution. An
+explicit per-stage entry (under <code class="docutils literal notranslate"><span class="pre">stages:</span></code> or as a dotted flag) overrides the
+expansion; two <code class="docutils literal notranslate"><span class="pre">shared</span></code> entries writing one leaf conflict.</p>
+<p><strong>Broadcast flag</strong> — <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span> <span class="pre">0.7</span></code> fans one value out to every
+SGLang engine stage’s <code class="docutils literal notranslate"><span class="pre">engine.mem_fraction_static</span></code>. It is the one convenience
+flag left; a dotted per-stage spelling overrides it without being a conflict.</p>
+<p><strong>Inspection</strong> — <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">config</span> <span class="pre">resolve</span></code> prints the configuration a launch
+with the same arguments would use (<code class="docutils literal notranslate"><span class="pre">--show</span> <span class="pre">config|diff|provenance</span></code>), and
+<code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">config</span> <span class="pre">explain</span> <span class="pre">PATH</span></code> names the source that set a value and what it
+overrode. Both run the same merge as <code class="docutils literal notranslate"><span class="pre">serve</span></code>.</p>
+</section>
+<section id="stageconfig-reference">
+<h2><code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> Reference<a class="headerlink" href="#stageconfig-reference" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>required</p></td>
+<td><p>Unique stage identifier. Set by the config class; a config file addresses stages by name and never renames them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">factory_path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>required</p></td>
+<td><p>Dotted import path to the stage factory.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">engine</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EngineArgs</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>SGLang ServerArgs overrides. Exists only on <code class="docutils literal notranslate"><span class="pre">EngineStageConfig</span></code> stages; writing it elsewhere is a path error.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">factory</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FactoryArgs</span></code></p></td>
+<td><p>empty</p></td>
+<td><p>Constructor kwargs for the stage factory, passed by field name. Unknown keys pass through.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">next</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code>, <code class="docutils literal notranslate"><span class="pre">list[str]</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Static downstream stage or stages for normal result routing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terminal</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p></td>
+<td><p>Marks a stage as terminal; terminal results are sent to the coordinator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">route_fn</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Dotted function path for request-aware result routing. The function receives <code class="docutils literal notranslate"><span class="pre">(request_id,</span> <span class="pre">stage_output)</span></code> and returns a downstream stage name or list of stage names.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gpu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">list[int]</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>GPU id for the stage. <code class="docutils literal notranslate"><span class="pre">None</span></code> means CPU placement. A list is used for tensor parallel ranks.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tp_size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Number of tensor-parallel ranks. Must match <code class="docutils literal notranslate"><span class="pre">len(gpu)</span></code> when <code class="docutils literal notranslate"><span class="pre">gpu</span></code> is a list.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gpu_memory_fraction</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">float</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Per-stage-rank budget as a fraction of total physical GPU memory. Required per stage when multiple processes share one GPU.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">process</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>OS process group identifier. Non-TP stages with the same <code class="docutils literal notranslate"><span class="pre">process</span></code> value share a single OS process; every non-TP stage must declare one explicitly. For TP stages, <code class="docutils literal notranslate"><span class="pre">process</span></code> is optional and acts as a prefix for the derived rank-process names (<code class="docutils literal notranslate"><span class="pre">{process}_tp{rank}</span></code>); if unset, the stage name is used as the prefix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">env</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p>Per-stage env defaults applied in this stage’s worker process at spawn; never overrides <code class="docutils literal notranslate"><span class="pre">os.environ</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wait_for</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list[str]</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Upstream stages required before this stage can execute a request.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">wait_for_fn</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Dotted function path for request-aware fan-in source selection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">merge_fn</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Dotted import path to the fan-in merge function. Required when <code class="docutils literal notranslate"><span class="pre">wait_for</span></code> is set.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream_to</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list[str]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Static superset of streaming targets for chunks such as hidden states or codec codes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream_done_to_fn</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Dotted function path for request-aware stream-completion targets.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">project_payload</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p>Optional target-stage to dotted projection function mapping used before writing a downstream payload.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">comm</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CommConfig</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Per-stage communication pool and Mooncake options.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Routing rule: set exactly one of <code class="docutils literal notranslate"><span class="pre">next</span></code> or <code class="docutils literal notranslate"><span class="pre">terminal=True</span></code>. <code class="docutils literal notranslate"><span class="pre">route_fn</span></code> is an
+optional request-aware override for stages that already declare <code class="docutils literal notranslate"><span class="pre">next</span></code>.
+Fan-in follows the same static-superset pattern: keep <code class="docutils literal notranslate"><span class="pre">wait_for</span></code> as the full
+set of possible upstream stages, and use <code class="docutils literal notranslate"><span class="pre">wait_for_fn</span></code> only to select the
+active per-request subset. When using <code class="docutils literal notranslate"><span class="pre">stream_done_to_fn</span></code>, keep <code class="docutils literal notranslate"><span class="pre">stream_to</span></code>
+as the static superset because runtime prep derives stream receivers from it.</p>
+</section>
+<section id="pipelineconfig-reference">
+<h2><code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> Reference<a class="headerlink" href="#pipelineconfig-reference" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model_path</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>required</p></td>
+<td><p>Hugging Face model id or local checkpoint path.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stages</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list[StageConfig]</span></code></p></td>
+<td><p>required</p></td>
+<td><p>Stage definitions. Config files override fields on them by name and cannot add or remove stages.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">model_path</span></code></p></td>
+<td><p>Pipeline name. Used for reporting and runtime identification.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">entry_stage</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>first stage</p></td>
+<td><p>Declared by the config class when the first stage is not the entry. Not settable from a config file or the CLI.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fused_stages</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">list[list[str]]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Adjacent linear stage groups to colocate in one runtime process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">env_defaults</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">dict[str,</span> <span class="pre">str]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+<td><p>Environment defaults applied before stage factory imports. Existing process values take precedence.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mps</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">off</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code>, or <code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">off</span></code></p></td>
+<td><p>Native CUDA MPS policy for eligible same-GPU worker processes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">endpoints</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">EndpointsConfig</span></code></p></td>
+<td><p>IPC defaults</p></td>
+<td><p>Endpoint allocation settings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">placement</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PlacementConfig</span></code></p></td>
+<td><p>defaults</p></td>
+<td><p>Placement planning limits, e.g. <code class="docutils literal notranslate"><span class="pre">max_total_gpu_memory_fraction_per_gpu</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terminal_stages_fn</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>Dotted function path for request-aware terminal-stage resolution.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">config_cls</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
+<td><p>class name</p></td>
+<td><p>Stored automatically and used when loading a saved config file.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Class-level hooks a model config may declare:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">stage_config_types:</span> <span class="pre">ClassVar[dict[str,</span> <span class="pre">type[StageConfig]]]</span></code> — the
+<code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> subclass a named stage compiles paths against; mapping a
+stage to <code class="docutils literal notranslate"><span class="pre">EngineStageConfig</span></code> is what makes <code class="docutils literal notranslate"><span class="pre">engine.*</span></code> exist on it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stage_factory_kwargs(stage_name)</span></code> — constructor kwargs the pipeline author
+passes to the factory in code (wiring, not configuration). A user-set
+<code class="docutils literal notranslate"><span class="pre">factory.*</span></code> value with the same name overrides the hook’s value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tensor_parallel_server_args_overrides(stage_name,</span> <span class="pre">tp_size)</span></code> /
+<code class="docutils literal notranslate"><span class="pre">topology_gated_custom_all_reduce_stages()</span></code> — engine overrides derived from
+the resolved TP topology at launch.</p></li>
+</ul>
+<p>Derived values are computed from stages, not manually maintained:
+<code class="docutils literal notranslate"><span class="pre">resolved_entry_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">terminal_stages</span></code>, <code class="docutils literal notranslate"><span class="pre">gpu_placement</span></code>.</p>
+<section id="stage-fusion">
+<h3>Stage Fusion<a class="headerlink" href="#stage-fusion" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">fused_stages</span></code> is a framework-level colocation hint. It keeps every listed
+logical stage as a normal <code class="docutils literal notranslate"><span class="pre">Stage</span></code>; it does not create a synthetic scheduler.
+At runtime prep, each fused group adds a process-colocation constraint, and
+ordinary Stage routing can then use process-local dispatch for eligible hops.
+A group must be adjacent, linear, non-TP, and fit on at most one GPU.</p>
+</section>
+</section>
+<section id="how-values-reach-a-factory">
+<h2>How Values Reach a Factory<a class="headerlink" href="#how-values-reach-a-factory" title="Link to this heading">#</a></h2>
+<p>Two channels feed a stage factory, resolved in the parent process and applied
+against the factory signature in the worker:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>PipelineConfig.stage_factory_kwargs(name)      # author channel: code wiring
+stage.factory.*                                # config channel: by field name
+stage.engine.*  -&gt;  server_args_overrides      # config channel: one dict to SGLang
+</pre></div>
+</div>
+<p>Per key, the config channel wins over the author channel;
+<code class="docutils literal notranslate"><span class="pre">server_args_overrides</span></code> merges per key the same way. A configured key the
+factory does not accept raises at construction. Standard kwargs
+(<code class="docutils literal notranslate"><span class="pre">model_path</span></code>, <code class="docutils literal notranslate"><span class="pre">gpu_id</span></code>, <code class="docutils literal notranslate"><span class="pre">total_gpu_memory_fraction</span></code>) are injected only when
+the factory signature declares them; <code class="docutils literal notranslate"><span class="pre">gpu_id</span></code> is owned by placement and is
+rejected from the author channel.</p>
+<section id="device-and-gpu-placement-contract">
+<h3>Device and GPU placement contract<a class="headerlink" href="#device-and-gpu-placement-contract" title="Link to this heading">#</a></h3>
+<p>A stage’s card is placement’s decision, made in the parent process from
+<code class="docutils literal notranslate"><span class="pre">stage.gpu</span></code> (or <code class="docutils literal notranslate"><span class="pre">processes.&lt;name&gt;.replica_devices</span></code> for a replicated process)
+and handed to the factory as <code class="docutils literal notranslate"><span class="pre">gpu_id</span></code>. The factory’s <code class="docutils literal notranslate"><span class="pre">device</span></code> argument is
+only ever a device type: <code class="docutils literal notranslate"><span class="pre">cpu</span></code> to keep a stage on the host, or a platform
+type such as <code class="docutils literal notranslate"><span class="pre">cuda</span></code>/<code class="docutils literal notranslate"><span class="pre">npu</span></code> that must match the host. It never carries an
+index. <code class="docutils literal notranslate"><span class="pre">cuda:1</span></code> in a config is refused, and so are <code class="docutils literal notranslate"><span class="pre">factory.gpu_id</span></code> and the
+two memory-fraction kwargs listed in <code class="docutils literal notranslate"><span class="pre">PLACEMENT_OWNED_FACTORY_KWARGS</span></code>
+(<code class="docutils literal notranslate"><span class="pre">sglang_omni/config/schema.py</span></code>), because those are injected by placement.</p>
+<p>Inside a factory the two values meet in one helper:</p>
+<ol class="arabic simple">
+<li><p>Declare both parameters, <code class="docutils literal notranslate"><span class="pre">device:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></code> and
+<code class="docutils literal notranslate"><span class="pre">gpu_id:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></code>. A GPU-placed stage whose factory has no
+<code class="docutils literal notranslate"><span class="pre">gpu_id</span></code> parameter is refused by name before any weight is loaded.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">sglang_omni.utils.device.resolve_concrete_device(device,</span> <span class="pre">gpu_id)</span></code>.
+It checks the requested type against the host platform, takes the index
+from <code class="docutils literal notranslate"><span class="pre">gpu_id</span></code>, and only when neither side supplied one asks the host
+which card the process already sits on. Do not call <code class="docutils literal notranslate"><span class="pre">resolve_device_spec</span></code>
+from a factory and do not combine the two values by hand.</p></li>
+<li><p>A factory that builds SGLang <code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> itself writes the resolved
+type into <code class="docutils literal notranslate"><span class="pre">server_args_overrides[&quot;device&quot;]</span></code> through
+<code class="docutils literal notranslate"><span class="pre">sglang_omni.scheduling.sglang_backend.pin_resolved_device_type</span></code>, which
+also rejects an operator override that names a different device. The
+shared <code class="docutils literal notranslate"><span class="pre">SGLangGenerationEngineBuilder</span></code> already does this.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">tests/unit_test/test_stage_device_contract.py</span></code> sweeps every model, topology
+and stage in the repository against these rules; a new model is covered
+without registering anything. Because every GPU factory follows them, any
+GPU process can be given <code class="docutils literal notranslate"><span class="pre">num_replicas</span></code>/<code class="docutils literal notranslate"><span class="pre">replica_devices</span></code>
+(<code class="docutils literal notranslate"><span class="pre">basic_usage/process_topology.md</span></code>).</p>
+</section>
+</section>
+<section id="runtime-prep-and-runner">
+<h2>Runtime Prep and Runner<a class="headerlink" href="#runtime-prep-and-runner" title="Link to this heading">#</a></h2>
+<p>Runtime prep builds the resolved state used by the runner:</p>
+<ul class="simple">
+<li><p>validate stage names and static topology</p></li>
+<li><p>compute the entry stage and terminal stages</p></li>
+<li><p>allocate ZMQ endpoints</p></li>
+<li><p>carry dotted factory, merge, route, and projection paths into worker specs</p></li>
+<li><p>resolve both kwargs channels without importing stage factories</p></li>
+<li><p>build relay config from stage placement and relay backend</p></li>
+<li><p>wire stream targets and same-GPU stream fast paths</p></li>
+</ul>
+<p>Serving uses <code class="docutils literal notranslate"><span class="pre">MultiProcessPipelineRunner</span></code> for both single-process and
+multi-process topologies. Runtime prep first resolves GPU placement, then
+process topology: every non-TP stage must declare <code class="docutils literal notranslate"><span class="pre">process</span></code> explicitly, and
+explicit <code class="docutils literal notranslate"><span class="pre">stage.process</span></code> groups non-TP stages declaratively. A process group
+may contain CPU stages and stages on at most one GPU. Multiple process groups
+may share the same GPU only when per-stage <code class="docutils literal notranslate"><span class="pre">gpu_memory_fraction</span></code> budgets are
+explicit and fit the configured placement limit.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pipeline/
+|-- stage_workers.py    # StageLaunchConfig, subprocess entrypoint, StageGroup
+|-- runtime_config.py   # endpoint/runtime-dir/placement prep
+`-- mp_runner.py        # Cross-stage orchestration and coordinator ownership
+</pre></div>
+</div>
+<p>The child process does not recompile the pipeline. The main process builds
+fully resolved, picklable stage/process specs; the child imports stage
+factories, builds schedulers, constructs <code class="docutils literal notranslate"><span class="pre">Stage</span></code> objects, signals ready, and
+runs one or more non-TP stages in the same event loop.</p>
+</section>
+<section id="tensor-parallelism">
+<h2>Tensor Parallelism<a class="headerlink" href="#tensor-parallelism" title="Link to this heading">#</a></h2>
+<p>Tensor parallelism inside a stage is orthogonal to pipeline parallelism between
+stages.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>...<span class="w"> </span>--thinker.tp_size<span class="w"> </span><span class="m">4</span><span class="w"> </span>--thinker.gpu<span class="w"> </span><span class="s2">"[0, 1, 2, 3]"</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">tp_size</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the runner derives one process per TP rank. Each process runs
+the stage scheduler and model worker with a different <code class="docutils literal notranslate"><span class="pre">tp_rank</span></code> and GPU. NCCL
+collectives inside model forward keep TP ranks in lockstep. <code class="docutils literal notranslate"><span class="pre">StageConfig.process</span></code>
+is optional for TP stages; if set, it acts as the prefix for the derived
+per-rank process names (<code class="docutils literal notranslate"><span class="pre">{process}_tp{rank}</span></code>). TP ranks always own their OS
+process exclusively.</p>
+<p>Only rank 0 owns external stage IO:</p>
+<ul class="simple">
+<li><p>rank 0 receives ZMQ messages from the coordinator or previous stage</p></li>
+<li><p>rank 0 fans work and aborts out to follower ranks</p></li>
+<li><p>all ranks make the same scheduling decisions</p></li>
+<li><p>only rank 0 sends downstream results or terminal completions</p></li>
+</ul>
+<p>Each TP stage gets its own NCCL port allocation so multiple TP groups can exist
+inside one pipeline.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pipeline.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Pipeline Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="adding_parameters.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Adding a Parameter</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#declarative-config">Declarative Config</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consumer-groups">Consumer Groups</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-values-yaml-and-cli">Setting Values: YAML and CLI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stageconfig-reference"><code class="docutils literal notranslate"><span class="pre">StageConfig</span></code> Reference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipelineconfig-reference"><code class="docutils literal notranslate"><span class="pre">PipelineConfig</span></code> Reference</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stage-fusion">Stage Fusion</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-values-reach-a-factory">How Values Reach a Factory</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#device-and-gpu-placement-contract">Device and GPU placement contract</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-prep-and-runner">Runtime Prep and Runner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tensor-parallelism">Tensor Parallelism</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Oct 28, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Bumping the SGLang Pin &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3476fdda"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/bump_version';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=d7738e8a"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=7979a72f"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="RL Admin Control" href="rl_admin_control.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.7" />
+    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_npu.html">🚀 Installation — Ascend NPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_cpu.html">🚀 Installation — Intel CPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_musa.html">🚀 Installation — MUSA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron3_5_asr.html">Nemotron 3.5 ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minicpm_o.html">MiniCPM-o</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/nemotron_voicechat.html">NemotronLabs VoiceChat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/personaplex.html">PersonaPlex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_cosyvoice3.html">Fun-CosyVoice3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/auk.html">AuK</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology.html">Process Topology, Replicas, and GPU Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">SGLang-Omni Rust Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/qwen3_tts_leading_silence.html">Qwen3-TTS Base: Leading Silence in X-Vector Voice Cloning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adding_parameters.html">Adding a Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bumping the SGLang Pin</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/bump_version.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/bump_version.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/bump_version.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/bump_version.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Bumping the SGLang Pin</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-moves-together">What moves together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-omni-depends-on-sglang">Where Omni depends on SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-upstream-delta">Reading the upstream delta</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consequences-of-the-stack-not-of-sglang">Consequences of the stack, not of SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ci-image">The CI image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pr">The PR</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bumping-the-sglang-pin">
+<h1>Bumping the SGLang Pin<a class="headerlink" href="#bumping-the-sglang-pin" title="Link to this heading">#</a></h1>
+<p>SGLang-Omni pins one SGLang release and the stack that release pins. Moving
+that pin is a version bump PR. This page covers what moves together, where
+Omni depends on SGLang beyond its public API, how the CI image is updated,
+and what has to be measured before the PR is credible. Read
+<a class="reference internal" href="main.html"><span class="std std-doc">main.md</span></a> first for the stage / scheduler / model-runner picture;
+the seams named below are the ones that page introduces.</p>
+<p>Omni is not a thin caller of SGLang. <code class="docutils literal notranslate"><span class="pre">OmniScheduler</span></code> borrows the upstream
+<code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> methods it does not override and runs them on itself,
+<code class="docutils literal notranslate"><span class="pre">SGLModelRunner</span></code> subclasses <code class="docutils literal notranslate"><span class="pre">ModelRunner</span></code>, the execution bridge drives
+<code class="docutils literal notranslate"><span class="pre">ForwardBatch</span></code> from Omni’s own event loops, and the engine builders mutate
+<code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> at fixed points of the engine lifecycle. Each of those is a
+contract with one SGLang release, and upstream can move any of them without
+touching a public signature. That is why a bump is reviewed as a contract
+change, not as a pin edit.</p>
+<section id="what-moves-together">
+<h2>What moves together<a class="headerlink" href="#what-moves-together" title="Link to this heading">#</a></h2>
+<p>The pin set is whatever upstream’s <code class="docutils literal notranslate"><span class="pre">python/pyproject.toml</span></code> pins at the target
+tag. Diff it against the current tag first, and resolve the <code class="docutils literal notranslate"><span class="pre">lmsysorg/sglang</span></code>
+image for the tag to a digest; the size of the bump follows from whether
+torch, CUDA or Python moved, not from the SGLang version number.</p>
+<p>Omni mirrors these pins in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>: <code class="docutils literal notranslate"><span class="pre">sglang</span></code>, <code class="docutils literal notranslate"><span class="pre">torch</span></code>,
+<code class="docutils literal notranslate"><span class="pre">torchvision</span></code>, <code class="docutils literal notranslate"><span class="pre">torchcodec</span></code>, <code class="docutils literal notranslate"><span class="pre">flashinfer_python[cu13]</span></code>, <code class="docutils literal notranslate"><span class="pre">flash-attn-4</span></code>,
+<code class="docutils literal notranslate"><span class="pre">kernels</span></code>, <code class="docutils literal notranslate"><span class="pre">numba</span></code>, <code class="docutils literal notranslate"><span class="pre">transformers</span></code>, and <code class="docutils literal notranslate"><span class="pre">torchaudio</span></code> when upstream moves it.
+<code class="docutils literal notranslate"><span class="pre">sglang-kernel</span></code> is not pinned by Omni; it comes with the image. Every
+comment that says a pin matches the sglang stack marks a line to revisit.</p>
+<p>The other places a version lives:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>File</p></th>
+<th class="head"><p>What it carries</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">docker/Dockerfile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_IMAGE</span></code> (digest of the new tag’s cu13 manifest), the FlashInfer reinstall version, the JIT cache path <code class="docutils literal notranslate"><span class="pre">/root/.cache/flashinfer/&lt;version&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">FLASHINFER_CACHE_IMAGE</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/*.yaml</span></code></p></td>
+<td><p>Every <code class="docutils literal notranslate"><span class="pre">image:</span></code> line, pinned by digest</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">docker/cpu.Dockerfile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_IMAGE</span></code> (digest of the new tag’s <code class="docutils literal notranslate"><span class="pre">-xeon</span></code> manifest)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">docker/xpu.Dockerfile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_XPU_BRANCH</span></code> (the tag); SGLang’s XPU manifest pins the <code class="docutils literal notranslate"><span class="pre">sglang-kernel-xpu</span></code> wheel</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pyproject_cpu.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">pyproject_xpu.toml</span></code>, <code class="docutils literal notranslate"><span class="pre">scripts/cpu/install_cpu.sh</span></code>, <code class="docutils literal notranslate"><span class="pre">scripts/xpu/install_xpu.sh</span></code></p></td>
+<td><p>The verified SGLang tag; the provider pyprojects cannot pin <code class="docutils literal notranslate"><span class="pre">sglang</span></code> because every wheel pulls CUDA torch</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">docs/get_started/installation.md</span></code>, <code class="docutils literal notranslate"><span class="pre">docs/get_started/installation_cpu.md</span></code>, <code class="docutils literal notranslate"><span class="pre">docs/get_started/installation_xpu.md</span></code>, <code class="docutils literal notranslate"><span class="pre">docs/basic_usage/tts.md</span></code>, <code class="docutils literal notranslate"><span class="pre">docs/cookbook/*.md</span></code>, model READMEs</p></td>
+<td><p>Version names in install instructions</p></td>
+</tr>
+<tr class="row-even"><td><p>Comments in <code class="docutils literal notranslate"><span class="pre">sglang_omni/</span></code></p></td>
+<td><p>Never name a version; state the invariant the code relies on so the text survives the next bump</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Search the tree for the old versions and the old image digest; the table is
+what past bumps touched.</p>
+<p>The Intel CPU and XPU stacks pin their own SGLang tag and base images, and
+their CI workflows build <code class="docutils literal notranslate"><span class="pre">docker/cpu.Dockerfile</span></code> and <code class="docutils literal notranslate"><span class="pre">docker/xpu.Dockerfile</span></code>
+on every PR that touches <code class="docutils literal notranslate"><span class="pre">sglang_omni/</span></code>. <code class="docutils literal notranslate"><span class="pre">sglang_omni/platforms/</span></code> imports the
+pinned release’s modules at import time, so those workflows fail on a bump
+until the two stacks move with it: the <code class="docutils literal notranslate"><span class="pre">-xeon</span></code> image digest, the XPU tag, and
+the verified tag in the provider pyprojects, install scripts and install docs.
+The XPU image builds SGLang from source, so diff upstream’s
+<code class="docutils literal notranslate"><span class="pre">python/pyproject_xpu.toml</span></code> and <code class="docutils literal notranslate"><span class="pre">docker/xpu.Dockerfile</span></code> between the tags for
+new build requirements, and diff <code class="docutils literal notranslate"><span class="pre">python/pyproject_cpu.toml</span></code> for its own
+torch and torchvision pins, which move independently of the CUDA manifest:
+one release moved the SYCL kernel from a git
+requirement to a pinned wheel and added <code class="docutils literal notranslate"><span class="pre">setuptools-rust</span></code> to the build
+requirements, which the image avoids by building without isolation.</p>
+<p>The ROCm, NPU and MUSA stacks (<code class="docutils literal notranslate"><span class="pre">docker/rocm.Dockerfile</span></code>, <code class="docutils literal notranslate"><span class="pre">pyproject_rocm.toml</span></code>)
+pin their own SGLang tag and base images. No project CI builds them, so a bump
+PR leaves them alone, says so in its description, and hands the provider owners
+the new tag, the matching provider image digest if one exists, and any platform
+dispatch change made in <code class="docutils literal notranslate"><span class="pre">sglang_omni/platforms/</span></code>.</p>
+</section>
+<section id="where-omni-depends-on-sglang">
+<h2>Where Omni depends on SGLang<a class="headerlink" href="#where-omni-depends-on-sglang" title="Link to this heading">#</a></h2>
+<p>Omni’s contracts with SGLang are not all visible from the import list. The
+surfaces below are the ones past bumps had to revisit, each with an example
+of how it broke. Check every one of them, and expect a release to add a
+surface this list does not name.</p>
+<p><strong>Imports.</strong> Every <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">sglang...</span> <span class="pre">import</span></code> in <code class="docutils literal notranslate"><span class="pre">sglang_omni/</span></code> and <code class="docutils literal notranslate"><span class="pre">tests/</span></code>.
+Most files import upstream directly; <code class="docutils literal notranslate"><span class="pre">sglang_omni/vendor/sglang/</span></code> re-exports
+the layers, distributed helpers and core types that Omni patches or wants one
+import site for. Check that the module and symbol still exist, that a
+re-export resolves to the same origin, and that the signature or dataclass
+fields are unchanged. An import behind <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">ImportError</span></code> gets the
+same check: the MOSS-TTS flash attention import was guarded that way, and
+when <code class="docutils literal notranslate"><span class="pre">sglang.jit_kernel</span></code> became <code class="docutils literal notranslate"><span class="pre">sglang.kernels.ops</span></code> it would have fallen
+back to SDPA without a word.</p>
+<p><strong>Borrowed and subclassed classes.</strong> <code class="docutils literal notranslate"><span class="pre">OmniScheduler</span></code> looks up the upstream
+<code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> methods it does not override through <code class="docutils literal notranslate"><span class="pre">__getattr__</span></code> and runs them
+with itself as <code class="docutils literal notranslate"><span class="pre">self</span></code>, and builds the scheduler components those methods
+expect (<code class="docutils literal notranslate"><span class="pre">SchedulerDPAttnAdapter</span></code>, <code class="docutils literal notranslate"><span class="pre">SchedulerLoadInquirer</span></code>, the logprob
+processor, <code class="docutils literal notranslate"><span class="pre">NewTokenRatioTracker</span></code>) with upstream’s own
+kwargs; <code class="docutils literal notranslate"><span class="pre">SGLModelRunner</span></code> subclasses <code class="docutils literal notranslate"><span class="pre">ModelRunner</span></code>. Diff the body of every
+method Omni overrides and every borrowed method it calls, and look for
+<code class="docutils literal notranslate"><span class="pre">self.&lt;attr&gt;</span></code> reads the new upstream bodies make that <code class="docutils literal notranslate"><span class="pre">OmniScheduler.__init__</span></code>
+never assigns. A decorator on a borrowed method reads <code class="docutils literal notranslate"><span class="pre">self</span></code> too: one release
+wrapped <code class="docutils literal notranslate"><span class="pre">get_next_batch_to_run</span></code> in a stage timer whose first statement read an
+attribute only upstream’s <code class="docutils literal notranslate"><span class="pre">__init__</span></code> set. Upstream also moves work between
+methods: request timeout aborts left <code class="docutils literal notranslate"><span class="pre">get_next_batch_to_run</span></code> for an intake
+method Omni’s event loops never call, which disables them without an error.
+When a constructor gains or loses fields, pass the new shape;
+a helper that filters kwargs by signature or branches on field layout keeps
+two versions alive.</p>
+<p><strong>The boot sequence.</strong> <code class="docutils literal notranslate"><span class="pre">ModelWorker</span></code> and the MLX worker run upstream’s worker
+boot themselves: publish the resolved config together with the process
+placement, run the parallel runtime phase, run the layer runtime phase, then
+build the runner. The order and the arguments of each step are upstream’s, and
+a step that upstream adds in front of the runner is not an import change. One
+release moved the ranks from a record passed to the runner into the published
+context, and every rank read made before the placement was published raised.
+The image encoders that build model parallel groups outside a worker publish
+their own placement first, and follow the same contract.</p>
+<p><strong>Decoder layers.</strong> The Qwen3-Omni talker, the Ming-Omni thinker and the
+Ming-TTS model define their own decoder layers on upstream’s layer boundary
+API (<code class="docutils literal notranslate"><span class="pre">sglang_omni/vendor/sglang/layers.py</span></code> re-exports it). The Qwen3-Omni
+talker’s layer lives in <code class="docutils literal notranslate"><span class="pre">qwen3_omni/components/thinker_model.py</span></code>; the
+Qwen3-Omni thinker itself runs upstream’s <code class="docutils literal notranslate"><span class="pre">Qwen3MoeLLMModel</span></code>, and Qwen3-TTS
+keeps its own decoder layer with an explicit residual and reuses only the
+attention class. A layer written against the boundary API is a copy of
+upstream’s layer forward with Omni’s hooks in it. Diff upstream’s layer for
+the same architecture between the tags and mirror the change in order: which
+boundary prepares, which finishes, what the exit scope publishes for the MoE
+reduction. Outputs of a boundary are modified in place or through its
+accessors; the boundary checks the stream identity.</p>
+<p><strong>The vendor layer.</strong> <code class="docutils literal notranslate"><span class="pre">sglang_omni/vendor/sglang/layers.py</span></code> patches
+<code class="docutils literal notranslate"><span class="pre">RMSNorm.forward_cuda</span></code> and <code class="docutils literal notranslate"><span class="pre">models.py</span></code> patches <code class="docutils literal notranslate"><span class="pre">apply_qk_norm</span></code>; the module
+docstrings state what each patch does, and <code class="docutils literal notranslate"><span class="pre">models.py</span></code> the condition for
+removing it. Check that the wrapped upstream body still has the shape the
+patch assumes (a dispatch rewrite upstream can route around a patched method
+without an error) and that <code class="docutils literal notranslate"><span class="pre">tests/unit_test/vendor/</span></code> still pins it.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">ServerArgs</span></code> mutation.</strong> <code class="docutils literal notranslate"><span class="pre">build_sglang_server_args</span></code> constructs the record
+and resolves it once, so every reader between the builder and publish sees
+what resolution decided rather than the raw input. Omni changes engine
+configuration after the builder through one seam,
+<code class="docutils literal notranslate"><span class="pre">sglang_omni/vendor/sglang/server_args.py::override_server_args</span></code>. Upstream
+decides what a mutation means at each lifecycle phase; today a resolved record
+that is not yet published takes the change as a declaration, and a
+published record is read-only with its values living on the runtime-context
+bags. Every call site has a
+phase, and every later reader has to read from where the current release
+stores the value. The bump that introduced the read-only record turned
+several write-then-read-back sites into hard errors.</p>
+<p><strong>Compat overlays.</strong> <code class="docutils literal notranslate"><span class="pre">sglang_omni/models/dots_tts/compat.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sglang_omni/models/qwen3_tts/compat.py</span></code> and
+<code class="docutils literal notranslate"><span class="pre">sglang_omni/models/qwen3_omni/components/vision_compat.py</span></code> bridge a pinned
+third-party package to the pinned stack, and each carries its removal
+condition in its docstring. Read the condition against the new stack and
+delete the overlay when it is met. A new overlay is one module that every
+import of the package goes through, with the condition written down.</p>
+<p><strong>Copies of upstream code.</strong> Omni re-implements a few upstream helpers where
+it needs a different shape, for example the seeded sampling transform in
+<code class="docutils literal notranslate"><span class="pre">moss_tts/sampling_kernels.py</span></code> and <code class="docutils literal notranslate"><span class="pre">qwen3_tts/sampling_kernels.py</span></code>. A copy
+imports nothing, so no import or signature diff flags it; find them through
+the comments that name the upstream source and diff them against the new tag
+by hand. When upstream changes a numerical detail (a clamp, an accumulation
+order), mirror it in every copy and pin the boundary with a test per copy.</p>
+<p><strong>Test doubles and monkeypatch targets.</strong> <code class="docutils literal notranslate"><span class="pre">tests/unit_test/fakes.py</span></code> and the
+test-local fakes model resolved upstream shapes. A test that patches an
+upstream name fails loudly when the name is gone; a fake that still accepts
+a field upstream removed does not, so the test passes and the code does
+not. A test that builds an upstream parallel layer under
+<code class="docutils literal notranslate"><span class="pre">override_server_args()</span></code> gets a context with no process placement, so it
+also overrides the ranks on the parallel context.</p>
+<p><strong>Defensive access.</strong> <code class="docutils literal notranslate"><span class="pre">getattr</span></code>, <code class="docutils literal notranslate"><span class="pre">hasattr</span></code> and <code class="docutils literal notranslate"><span class="pre">except</span> <span class="pre">AttributeError</span></code>
+against state the pinned release defines statically are a second version
+kept alive by accident. The bump adds none and converts the ones in files it
+touches.</p>
+</section>
+<section id="reading-the-upstream-delta">
+<h2>Reading the upstream delta<a class="headerlink" href="#reading-the-upstream-delta" title="Link to this heading">#</a></h2>
+<p>SGLang squash-merges, so every upstream PR is one first-parent commit and the
+first-parent log between the two tags is the complete delta. Most of it
+touches files Omni never reaches. Scope the log to the files behind the
+import and subclass surfaces above and read every commit that remains,
+noting the old behavior, the new behavior and the first place in Omni where
+the difference is visible. Check separately for release-line patches that
+the previous tag carried and the new tag does not.</p>
+<p>Some upstream modules are borrowed as behavior, not as names, and are read
+as full diffs regardless of what the scoped log says: <code class="docutils literal notranslate"><span class="pre">managers/scheduler.py</span></code>
+and <code class="docutils literal notranslate"><span class="pre">scheduler_components/</span></code>, <code class="docutils literal notranslate"><span class="pre">schedule_batch.py</span></code>, <code class="docutils literal notranslate"><span class="pre">schedule_policy.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">model_executor/model_runner.py</span></code>, <code class="docutils literal notranslate"><span class="pre">forward_batch_info.py</span></code>, the CUDA graph
+runners, <code class="docutils literal notranslate"><span class="pre">server_args.py</span></code> with the runtime context, <code class="docutils literal notranslate"><span class="pre">sampling/</span></code>, the layers
+named in the vendor module, <code class="docutils literal notranslate"><span class="pre">mem_cache/</span></code> where Omni sizes KV, and
+<code class="docutils literal notranslate"><span class="pre">environ.py</span></code> for changed defaults.</p>
+<p>Changes that reach Omni live through borrowed <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> methods (admission
+order, tree-cache eviction, memory reservations subtracted from the KV
+budget, which of stop and <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> wins on the same step) are
+upstream behavior. Omni does not pin or patch them; they go in the PR as
+inherited changes with the user-visible effect stated, and the A/B measures
+them.</p>
+</section>
+<section id="consequences-of-the-stack-not-of-sglang">
+<h2>Consequences of the stack, not of SGLang<a class="headerlink" href="#consequences-of-the-stack-not-of-sglang" title="Link to this heading">#</a></h2>
+<p>A torch or Python move brings changes no upstream commit describes. Examples
+that have cost time:</p>
+<ul class="simple">
+<li><p>Transitive pins. torch pins its own NCCL; one NCCL release made a failed
+NVLS multicast bind fatal at communicator creation where the previous one
+logged and fell back, so every TP&gt;=2 engine died on hosts where the bind
+fails. The fix was an environment variable in the TP workflow with the
+cause in a comment, but finding it needed the torch release’s dependency
+list, not SGLang’s.</p></li>
+<li><p>Kernel hubs. Transformers serves some attention implementations from the
+<code class="docutils literal notranslate"><span class="pre">kernels</span></code> hub, which builds per torch and CUDA version. When no build
+exists for the new pair the model falls back to eager without an error.
+For the paths Omni captures into CUDA graphs, SGLang’s own attention
+classes ship with the pin and do not have this problem.</p></li>
+<li><p>Import guards in model packages. A package that checks the torch and
+torchaudio versions at import refused a torch that torchaudio never
+matched. That is what a compat overlay is for.</p></li>
+<li><p>Floating-point programs. A Transformers upgrade changed the intermediate
+dtype and reduction order of a vision positional-embedding interpolation.
+Every API and shape matched and a benchmark score dropped. For a
+pretrained model the arithmetic that interprets its weights is part of
+the contract; the overlay preserves the old sequence and is verified on
+intermediates, not only on the final score.</p></li>
+<li><p>Caches. New Inductor, Triton, FlashInfer and DeepGEMM versions invalidate
+every compiled artifact once, so the first pass in a fresh image measures
+compilation, not serving. SGLang builds DeepGEMM, Triton and its own JIT
+kernels under <code class="docutils literal notranslate"><span class="pre">SGLANG_CACHE_DIR</span></code>; the CI setup action points it at a
+directory shared across PRs on the persistent CI mount, so only the first
+job after a bump pays the build.</p></li>
+</ul>
+</section>
+<section id="the-ci-image">
+<h2>The CI image<a class="headerlink" href="#the-ci-image" title="Link to this heading">#</a></h2>
+<p>GPU CI runs inside <code class="docutils literal notranslate"><span class="pre">hongccc/sglang-omni</span></code>, pinned by digest in every
+workflow. The CI virtualenv uses Python 3.12 with system site-packages and
+loads <code class="docutils literal notranslate"><span class="pre">/opt/sglang/lib/python3.12/site-packages</span></code> with <code class="docutils literal notranslate"><span class="pre">site.addsitedir</span></code>, including
+the upstream SGLang editable-install <code class="docutils literal notranslate"><span class="pre">.pth</span></code> file. Torch, FlashInfer and SGLang
+come from the image and only what
+the image lacks is installed on top; <code class="docutils literal notranslate"><span class="pre">verify_omni_installed_pins.py</span></code> then
+checks every exact pin in <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> against what is installed.</p>
+<p>The image also installs Qwen-TTS without its conflicting dependencies, system
+SoX, the Descript DAC packages, and the Audar/CosyVoice extras. Apply the
+project’s dependency overrides when resolving these packages. CosyVoice itself
+has no package release, so the CI venv setup clones it at the commit the
+Fun-CosyVoice3 cookbook pins, with its Matcha-TTS submodule, and adds both to
+the venv through a <code class="docutils literal notranslate"><span class="pre">.pth</span></code> file. The CI import gate checks Qwen-TTS after the
+compatibility patch, DAC, NeuCodec, CosyVoice and Matcha-TTS imports, and the
+SoX executable. It imports llama.cpp before Torch to catch system NCCL
+conflicts; the image prioritizes Torch’s NCCL library. A package listing alone
+does not prove a usable runtime.</p>
+<p>Reinstalling even the same FlashInfer wheel refreshes bundled header mtimes.
+The Dockerfile preserves the cache donor’s mtimes only for byte-identical
+FlashInfer sources; changed sources remain newer and invalidate their objects.
+After rebuilding, run Ninja with <code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">-d</span> <span class="pre">explain</span></code> in the copied <code class="docutils literal notranslate"><span class="pre">cached_ops</span></code>
+directories before GPU validation to catch unintended object recompilation.</p>
+<p>Whether a bump ships a new image follows from the pin diff. When torch, CUDA,
+Python or FlashInfer move, it does: build <code class="docutils literal notranslate"><span class="pre">docker/Dockerfile</span></code> on the
+<code class="docutils literal notranslate"><span class="pre">lmsysorg/sglang</span></code> digest for the new tag, populate the FlashInfer JIT cache
+on a GPU for the architectures CI runs on (Docker builds have none, so the
+Dockerfile copies the cache from a previous image), push it, and put the new
+digest in the Dockerfile and the workflows. CI on the branch means nothing
+until the workflows point at the new image: on the old one the setup step
+installs the new torch into the virtualenv and nothing after that reflects
+the shipped stack.</p>
+<p>When only SGLang and the wheels it pins move (<code class="docutils literal notranslate"><span class="pre">sglang-kernel</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sgl-deep-gemm</span></code>), the image stays. The setup step installs those pins into the
+virtualenv, whose site-packages precede the image’s, and they are the same
+PyPI wheels upstream’s CUDA image installs. The FlashInfer cache in the image
+is keyed by a version that did not change. <code class="docutils literal notranslate"><span class="pre">SGLANG_IMAGE</span></code> in
+<code class="docutils literal notranslate"><span class="pre">docker/Dockerfile</span></code> still moves to the new tag’s digest so the next rebuild
+starts from the right base; the workflow digests and
+<code class="docutils literal notranslate"><span class="pre">FLASHINFER_CACHE_IMAGE</span></code> do not.</p>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
+<p>Two things prove the bump: the complete unit suite on the new stack, and an
+A/B of every model between the current pin and the target pin. Profiling
+comes in when the A/B moves a number.</p>
+<p>Run the complete unit suite, default and accelerator selections, inside the
+new image. A failure is one of three things: a test that patches an upstream
+name that no longer exists, a fake that models the old shape, or a real
+contract break. The first two are test fixes; the third is a surface above
+that was missed.</p>
+<p>The A/B compares <code class="docutils literal notranslate"><span class="pre">main</span></code> at the merge base on the current image with the
+branch on the new image, on the same host with the same datasets and
+concurrency, from a warm server (the first pass in a fresh image is
+discarded). Run the CI presets and gates for the families the workflows
+cover, and a manual launch with one non-streaming and one streaming request
+for the families they do not, at the CI concurrency and at concurrency 1,
+where per-request host cost shows. The families that consume something
+nothing else does, such as the diffusion runtime, the dLLM scheduler or the
+weight-share topology, are the ones most likely to break without a test
+noticing.</p>
+<p>Compare accuracy gates per sample rather than by aggregate score: a sample
+that flips between two runs of one arm is noise, a sample that is stable on
+each arm and differs across arms is the bump. Compare the startup logs too:
+CUDA graphs captured for the families that enable them, the same set of
+fallback warnings, the KV pool size, and time to ready from a warm cache. A
+gate that <code class="docutils literal notranslate"><span class="pre">main</span></code> also fails is not the bump’s to retune; it belongs to a
+calibration PR of its own.</p>
+<p>When a number moves, the request-level event recorder says which stage owns
+the difference, a torch trace per stage separates kernel time from host
+time, and a microbenchmark of the kernel the trace points at settles it;
+<a class="reference internal" href="profiler.html"><span class="std std-doc">profiler.md</span></a> has the mechanics. A regression belongs to the
+bump when the same-host A/B reproduces it with the Omni commit held fixed.
+One TTS regression blamed on a bump bisected to an unrelated PR merged three
+days before the branch existed; the bump was just the first change to run
+that configuration at the CI concurrency.</p>
+</section>
+<section id="the-pr">
+<h2>The PR<a class="headerlink" href="#the-pr" title="Link to this heading">#</a></h2>
+<p>The description carries the upstream delta, not the diff: the pins that
+move and the one upstream change that dominates the adaptation, the
+modifications grouped by the surfaces above, a separate list of every
+inherited upstream change a user can observe, and the A/B with both arms’
+commits and image digests, sample counts and the profiler attribution for
+any delta outside noise. Measurements and inferences are labeled as what
+they are.</p>
+<p>GPU CI needs the <code class="docutils literal notranslate"><span class="pre">run-ci</span></code> label. Model selectors choose presets within each
+family: TTS (<code class="docutils literal notranslate"><span class="pre">run-higgs</span></code>, <code class="docutils literal notranslate"><span class="pre">run-moss</span></code>, <code class="docutils literal notranslate"><span class="pre">run-qwen3-tts</span></code>, <code class="docutils literal notranslate"><span class="pre">run-cosyvoice3</span></code>,
+<code class="docutils literal notranslate"><span class="pre">run-qwen3-tts-custom-voice</span></code>), ASR (<code class="docutils literal notranslate"><span class="pre">run-fun-asr</span></code>, <code class="docutils literal notranslate"><span class="pre">run-qwen3-asr</span></code>,
+<code class="docutils literal notranslate"><span class="pre">run-whisper-asr</span></code>), and Omni (<code class="docutils literal notranslate"><span class="pre">run-qwen3-omni</span></code>, <code class="docutils literal notranslate"><span class="pre">run-minicpmo</span></code>). Apply them
+with <code class="docutils literal notranslate"><span class="pre">/tag-and-rerun-ci</span> <span class="pre">&lt;selectors&gt;</span></code>, for example
+<code class="docutils literal notranslate"><span class="pre">/tag-and-rerun-ci</span> <span class="pre">moss</span> <span class="pre">fun-asr</span> <span class="pre">minicpmo</span></code>. The Omni model defaults to
+Qwen3-Omni. The
+selectors within a family are exclusive, so each preset gets its own run on
+the new image before merge.</p>
+<p>After the merge, everyone pulls the new image and rebuilds their
+virtualenvs; an environment built against the old pins does not run <code class="docutils literal notranslate"><span class="pre">main</span></code>.</p>
+<p>A full CI calibration must follow the merge. The new stack moves throughput
+and latency, so the thresholds in the workflows still describe the old image.
+Recalibrate every family on the merged commit, in its own PR.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="rl_admin_control.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">RL Admin Control</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-moves-together">What moves together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-omni-depends-on-sglang">Where Omni depends on SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-upstream-delta">Reading the upstream delta</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#consequences-of-the-stack-not-of-sglang">Consequences of the stack, not of SGLang</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ci-image">The CI image</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-pr">The PR</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Oct 28, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

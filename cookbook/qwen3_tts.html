@@ -1,0 +1,1513 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Qwen3 TTS &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=3476fdda"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cookbook/qwen3_tts';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=d7738e8a"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=7979a72f"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ming-Omni-TTS" href="ming_tts.html" />
+    <link rel="prev" title="Fish Audio S2-Pro" href="fishaudio_s2_pro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.7" />
+    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_npu.html">🚀 Installation — Ascend NPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_cpu.html">🚀 Installation — Intel CPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_musa.html">🚀 Installation — MUSA</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron3_5_asr.html">Nemotron 3.5 ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minicpm_o.html">MiniCPM-o</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nemotron_voicechat.html">NemotronLabs VoiceChat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="personaplex.html">PersonaPlex</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llada2_uni.html">LLaDA2.0-Uni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_cosyvoice3.html">Fun-CosyVoice3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auk.html">AuK</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology.html">Process Topology, Replicas, and GPU Sharing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">SGLang-Omni Rust Router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/qwen3_tts_leading_silence.html">Qwen3-TTS Base: Leading Silence in X-Vector Voice Cloning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/adding_parameters.html">Adding a Parameter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/bump_version.html">Bumping the SGLang Pin</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/qwen3_tts.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/cookbook/qwen3_tts.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fcookbook/qwen3_tts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/cookbook/qwen3_tts.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Qwen3 TTS</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ascend-npu-baseline">Ascend NPU baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-inference">Deterministic Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overload-admission-policy">Overload / admission policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-cuda-graphs">Prefill CUDA graphs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-admission-coalescing">Prefill Admission Coalescing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#process-topology">Process topology</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-only-requests">Text-only Requests</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#leading-silence-in-x-vector-mode">Leading silence in x-vector mode</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#language-hint">Language Hint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codec-decoding-defaults">Codec decoding defaults</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#first-audio-chunk-ramp">First-audio chunk ramp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-parameters">Generation Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-variants">Model Variants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customvoice-checkpoints">CustomVoice Checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-results">Benchmark Results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-base">0.6B Base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-customvoice">1.7B CustomVoice</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="qwen3-tts">
+<h1>Qwen3 TTS<a class="headerlink" href="#qwen3-tts" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base">Qwen3-TTS-12Hz-Base</a> is a discrete
+multi-codebook text-to-speech model from the Qwen team. It performs fast voice cloning from a
+short reference clip, supports 10 languages, and streams 24 kHz speech with low latency. The
+<code class="docutils literal notranslate"><span class="pre">12Hz</span></code> in the name refers to the codec <strong>frame rate</strong> (12 acoustic frames per second), not the
+playback sample rate. SGLang-Omni serves two checkpoints — <code class="docutils literal notranslate"><span class="pre">0.6B</span></code> and <code class="docutils literal notranslate"><span class="pre">1.7B</span></code> — through the same
+<code class="docutils literal notranslate"><span class="pre">preprocessing</span> <span class="pre">→</span> <span class="pre">tts_engine</span> <span class="pre">→</span> <span class="pre">vocoder</span></code> pipeline and the OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code>
+endpoint.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> by following <a class="reference internal" href="../get_started/installation.html"><span class="std std-doc">Installation</span></a>.</p>
+<p>Qwen3-TTS Base uses the upstream <code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> package. Install it without
+dependencies so the SGLang-Omni Transformers 5.12 / SGLang 0.5.21 stack remains
+in place:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>sox
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-deps<span class="w"> </span>sox<span class="w"> </span>einops
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-deps<span class="w"> </span>qwen-tts<span class="o">==</span><span class="m">0</span>.1.1
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">--no-deps</span></code> is required on <strong>both</strong> lines, for two different reasons.</p>
+<p><code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> pins Transformers 4.57.3, which would replace the project’s 5.12.1.
+And resolving <code class="docutils literal notranslate"><span class="pre">sox</span></code> normally pulls <code class="docutils literal notranslate"><span class="pre">numpy</span></code> past the ceiling <code class="docutils literal notranslate"><span class="pre">numba==0.65.1</span></code>
+imposes (numba requires <code class="docutils literal notranslate"><span class="pre">numpy&lt;=2.4</span></code>); the upgraded <code class="docutils literal notranslate"><span class="pre">numpy</span></code> then breaks
+<code class="docutils literal notranslate"><span class="pre">librosa</span></code>, so <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">qwen_tts</span></code> fails with <code class="docutils literal notranslate"><span class="pre">Numba</span> <span class="pre">needs</span> <span class="pre">NumPy</span> <span class="pre">2.4</span> <span class="pre">or</span> <span class="pre">less</span></code>
+before the server can start.</p>
+<p>Do not add <code class="docutils literal notranslate"><span class="pre">onnxruntime</span></code> to that line either — it is already a SGLang-Omni
+dependency, and resolving it pulls <code class="docutils literal notranslate"><span class="pre">numpy</span></code> the same way.</p>
+<blockquote>
+<div><p>Do <strong>not</strong> install <code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> with dependencies here. Its declared dependency
+set can pull a different Transformers/Torch stack than the SGLang-Omni runtime.</p>
+</div></blockquote>
+<p>Concretely, <code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> 0.1.1 pins Transformers 4.57.3, and its model code calls
+APIs that Transformers 5.12 has since renamed or removed — most visibly the mask
+factories (<code class="docutils literal notranslate"><span class="pre">create_causal_mask</span></code> and friends), which now spell <code class="docutils literal notranslate"><span class="pre">input_embeds</span></code> as
+<code class="docutils literal notranslate"><span class="pre">inputs_embeds</span></code> and no longer accept <code class="docutils literal notranslate"><span class="pre">cache_position</span></code>. SGLang-Omni patches these
+differences in
+<code class="docutils literal notranslate"><span class="pre">sglang_omni/models/qwen3_tts/compat.py</span></code>, which every Qwen3-TTS entry point
+applies before importing <code class="docutils literal notranslate"><span class="pre">qwen_tts</span></code>. The pinned Transformers 5.12 / SGLang 0.5.21
+stack is therefore the supported configuration, not a workaround.</p>
+<p>If you hit a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> raised from inside <code class="docutils literal notranslate"><span class="pre">qwen_tts</span></code>, do not resolve it by
+installing the package’s own Transformers pin — that breaks the rest of the
+runtime. Report it instead, so the shim can cover it.</p>
+<p>The Python <code class="docutils literal notranslate"><span class="pre">sox</span></code> package shells out to the system <code class="docutils literal notranslate"><span class="pre">sox</span></code> binary on some paths, so install both.</p>
+<p>Download a checkpoint (both repositories are public, no token required):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-0.6B-Base
+hf<span class="w"> </span>download<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-Base
+</pre></div>
+</div>
+</section>
+<section id="server-configuration">
+<h2>Server Configuration<a class="headerlink" href="#server-configuration" title="Link to this heading">#</a></h2>
+<p>The pipeline is <code class="docutils literal notranslate"><span class="pre">preprocessing</span> <span class="pre">→</span> <span class="pre">tts_engine</span> <span class="pre">→</span> <span class="pre">vocoder</span></code>. First startup can take several minutes
+while the <code class="docutils literal notranslate"><span class="pre">tts_engine</span></code> captures CUDA graphs.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 0.6B</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-0.6B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_0_6b.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1.7B</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_1_7b.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<section id="ascend-npu-baseline">
+<h3>Ascend NPU baseline<a class="headerlink" href="#ascend-npu-baseline" title="Link to this heading">#</a></h3>
+<p>The NPU configurations use SGLang’s <code class="docutils literal notranslate"><span class="pre">ascend</span></code> attention backend for the Talker
+and PyTorch SDPA for both Speech Tokenizer instances. Talker graph capture
+(<code class="docutils literal notranslate"><span class="pre">cuda_graph</span></code>), private Talker compile, and asynchronous vocoder decode stay
+disabled. The 0.6B Base
+configuration has been validated with 16 concurrent requests; the other
+configurations retain a conservative single-request baseline.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 0.6B Base</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-0.6B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_0_6b_npu.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">qwen3_tts_1_7b_npu.yaml</span></code>, <code class="docutils literal notranslate"><span class="pre">qwen3_tts_0_6b_customvoice_npu.yaml</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">qwen3_tts_1_7b_voicedesign_npu.yaml</span></code> for the other supported checkpoints.
+The 0.6B and 1.7B files intentionally have separate <code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code>
+starting values. Calibrate configurations that retain the single-request
+baseline on the target NPU before increasing <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code> or any
+vocoder batch limit.</p>
+</section>
+<section id="deterministic-inference">
+<h3>Deterministic Inference<a class="headerlink" href="#deterministic-inference" title="Link to this heading">#</a></h3>
+<p>Dynamic batching can change Qwen3-TTS codec and waveform outputs even when the
+prompt, reference audio, and seed are unchanged. Both the 0.6B and 1.7B Base
+checkpoints provide an opt-in deterministic mode:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">enable_deterministic_inference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+<p>When enabled, the same prompt, reference audio, and seed produce byte-identical
+PCM across runtime batch sizes. This mode reduces throughput because it
+serializes reference preprocessing and vocoder decoding and disables both the
+initial and follow-up vocoder graph-capture paths (<code class="docutils literal notranslate"><span class="pre">initial_cuda_graph</span></code> and
+<code class="docutils literal notranslate"><span class="pre">followup_cuda_graph</span></code>), so it is disabled by default.</p>
+</section>
+<section id="overload-admission-policy">
+<h3>Overload / admission policy<a class="headerlink" href="#overload-admission-policy" title="Link to this heading">#</a></h3>
+<p>Two SGLang generation-stage knobs bound how the server behaves past saturation:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knob</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Qwen3-TTS default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.max_running_requests</span></code></p></td>
+<td><p>Concurrent running slots</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">64</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.max_queued_requests</span></code></p></td>
+<td><p>Waiting-queue depth before fast-reject</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">64</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Every request enters the waiting queue first, so <code class="docutils literal notranslate"><span class="pre">max_queued_requests</span></code>
+must be <strong>≥ 1</strong>. Capacity is about <code class="docutils literal notranslate"><span class="pre">running</span> <span class="pre">+</span> <span class="pre">queued</span></code>. Extra arrivals get
+HTTP <strong>503</strong> (<code class="docutils literal notranslate"><span class="pre">The</span> <span class="pre">request</span> <span class="pre">queue</span> <span class="pre">is</span> <span class="pre">full.</span></code>) before preprocessing, or later
+if the AR waiting queue or request-build backlog is full. Qwen3-TTS
+defaults to 4 request-build workers with pending depth 16.</p>
+</section>
+<section id="prefill-cuda-graphs">
+<h3>Prefill CUDA graphs<a class="headerlink" href="#prefill-cuda-graphs" title="Link to this heading">#</a></h3>
+<p>Every Qwen3-TTS checkpoint (Base, CustomVoice, VoiceDesign) defaults to a
+prefill CUDA graph with a token ladder up to 512: the full backend on
+CustomVoice, the breakable backend elsewhere.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knob</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.cuda_graph_backend_prefill</span></code></p></td>
+<td><p>Prefill graph backend (<code class="docutils literal notranslate"><span class="pre">full</span></code>, <code class="docutils literal notranslate"><span class="pre">breakable</span></code> or <code class="docutils literal notranslate"><span class="pre">disabled</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">full</span></code> on CustomVoice, <code class="docutils literal notranslate"><span class="pre">breakable</span></code> elsewhere</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.cuda_graph_bs_prefill</span></code></p></td>
+<td><p>Prefill token-count ladder to capture</p></td>
+<td><p>shared ladder through <code class="docutils literal notranslate"><span class="pre">512</span></code>, plus a <code class="docutils literal notranslate"><span class="pre">1</span></code> bucket</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.cuda_graph_max_bs_prefill</span></code></p></td>
+<td><p>Cap for the ladder</p></td>
+<td><p>top of the ladder</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">full</span></code> captures the prefill transformer body, attention included, as one
+graph per token bucket; the codec head and sampling still run outside it.
+<code class="docutils literal notranslate"><span class="pre">breakable</span></code> captures per-layer segments and runs attention eagerly between
+them. Each backend is accepted only on models that declare it, so a stage that
+has not adopted <code class="docutils literal notranslate"><span class="pre">full</span></code> still rejects it. <code class="docutils literal notranslate"><span class="pre">full</span></code> also needs a prefill attention
+backend that captures an ordinary prefill batch, <code class="docutils literal notranslate"><span class="pre">fa3</span></code> or <code class="docutils literal notranslate"><span class="pre">flashinfer</span></code> in
+SGLang 0.5.21: with any other backend the CustomVoice default stays
+<code class="docutils literal notranslate"><span class="pre">breakable</span></code>, and an explicit <code class="docutils literal notranslate"><span class="pre">full</span></code> fails at startup. SGLang logs the full
+prefill backend as experimental and its own compatibility rules never
+auto-disable it, so the generation batch policy’s checks are what guard it
+here.</p>
+<p>The default is the shared ladder with one bucket added. A replay falls
+back to eager when its bucket exceeds twice the real token count, and the
+shared ladder starts at 4, so a 1-token prefill lands in bucket 4 and
+misses. Measured over 3203 prefills at 10 and 20 RPS, 1301 of them (40.6%)
+are exactly one token, and they are the only shapes that fall back: 2 and
+3 already replay inside bucket 4. Adding the single <code class="docutils literal notranslate"><span class="pre">1</span></code> bucket takes the
+fallback rate to zero.</p>
+<p>CustomVoice prompts are a few dozen tokens, where the breakable graph’s
+per-layer segments are launch-bound, so CustomVoice captures the prefill
+transformer body as one graph. The full backend is selected by the
+checkpoint’s <code class="docutils literal notranslate"><span class="pre">tts_model_type</span></code>; Base prefills also carry reference audio and
+keep the breakable backend until the full one is measured on them.</p>
+<p>Opt out with <code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.cuda_graph_backend_prefill</span> <span class="pre">disabled</span></code>, or
+fall back to <code class="docutils literal notranslate"><span class="pre">breakable</span></code>. The default costs extra graph capture during
+startup. Raising <code class="docutils literal notranslate"><span class="pre">cuda_graph_max_bs_prefill</span></code> on its own regrows the default
+ladder to the new cap; declaring <code class="docutils literal notranslate"><span class="pre">cuda_graph_bs_prefill</span></code> yourself keeps your
+list as is.</p>
+<p>To change the ceiling, set <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code> and <code class="docutils literal notranslate"><span class="pre">max_queued_requests</span></code>
+together:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-0.6B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_0_6b.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.engine.max_running_requests<span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.engine.max_queued_requests<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Stepped <code class="docutils literal notranslate"><span class="pre">--concurrencies</span></code> is a closed-loop client: it never holds more than
+N in-flight requests, so past-ceiling load is a burst that drains. Keep
+offered load above <code class="docutils literal notranslate"><span class="pre">max_running_requests</span> <span class="pre">+</span> <span class="pre">max_queued_requests</span></code> for a
+duration with open-loop sustained overshoot:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_tts_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--generate-only<span class="w"> </span>--use-existing-server<span class="w"> </span>--stream<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-0.6B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">32</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-queued-requests<span class="w"> </span><span class="m">16</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--sustained-overshoot<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--overshoot-duration-s<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-samples<span class="w"> </span><span class="m">64</span>
+</pre></div>
+</div>
+<p>Arrivals default to <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">×</span> <span class="pre">capacity</span></code> (<code class="docutils literal notranslate"><span class="pre">--request-rate</span></code> overrides). Stats are
+on successes only; artifacts land in <code class="docutils literal notranslate"><span class="pre">&lt;output-dir&gt;/overshoot/</span></code>.</p>
+<p>A closed-loop <code class="docutils literal notranslate"><span class="pre">--concurrencies</span> <span class="pre">16,32,48,64</span></code> sweep is still available for
+comparing healthy vs past-ceiling points, but it does not hold overshoot. Each
+concurrency writes inspectable artifacts under <code class="docutils literal notranslate"><span class="pre">&lt;output-dir&gt;/c&lt;N&gt;/</span></code>.</p>
+</section>
+<section id="prefill-admission-coalescing">
+<h3>Prefill Admission Coalescing<a class="headerlink" href="#prefill-admission-coalescing" title="Link to this heading">#</a></h3>
+<p>Under concurrent load, the <code class="docutils literal notranslate"><span class="pre">tts_engine</span></code> stage can coalesce prefill admission:
+instead of admitting each prepared request into its own prefill batch, the
+scheduler can briefly hold admission so that multiple ready requests are
+prefilled together.</p>
+<p>A prefill step has a largely fixed scheduler cost, so fuller batches can reduce
+prefill overhead. The end-to-end benefit depends on whether that saving
+outweighs the extra admission delay and any resulting reduction in decode
+occupancy.</p>
+<p>Coalescing is <strong>off by default</strong> and opt-in through the <code class="docutils literal notranslate"><span class="pre">tts_engine</span></code> factory
+configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_1_7b.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.factory.prefill_coalesce_requests<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.factory.prefill_coalesce_wait_ms<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>or per-stage in YAML:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">tts_engine</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">prefill_coalesce_requests</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">      </span><span class="nt">prefill_coalesce_wait_ms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+</pre></div>
+</div>
+<p>The gate engages only when <code class="docutils literal notranslate"><span class="pre">prefill_coalesce_requests</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code>. Once engaged,
+admission is released as soon as any of the following holds:</p>
+<ul class="simple">
+<li><p>decode is idle, so a ready request can start immediately;</p></li>
+<li><p>the waiting queue reaches <code class="docutils literal notranslate"><span class="pre">prefill_coalesce_requests</span></code>;</p></li>
+<li><p>the oldest waiting request has waited <code class="docutils literal notranslate"><span class="pre">prefill_coalesce_wait_ms</span></code>.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">prefill_coalesce_wait_ms</span></code> is therefore an upper bound on the added admission
+wait. Admission may be released earlier if the target queue size is reached.</p>
+<p>The values above are an example for the Qwen3-TTS workload and are not intended
+as universal defaults. Match both <code class="docutils literal notranslate"><span class="pre">prefill_coalesce_requests</span></code> and
+<code class="docutils literal notranslate"><span class="pre">prefill_coalesce_wait_ms</span></code> to the workload you actually serve. Coalescing is
+most useful when natural prefill batches are small and a short hold can increase
+batching without materially reducing decode occupancy. If the wait is too long,
+the reduced decode occupancy can offset the prefill savings.</p>
+<p>Leave coalescing disabled for latency-sensitive traffic or workloads where the
+added wait does not produce enough additional batching.</p>
+</section>
+<section id="process-topology">
+<h3>Process topology<a class="headerlink" href="#process-topology" title="Link to this heading">#</a></h3>
+<p>By default all three stages share one process. Per-request reference
+preprocessing (speech-tokenizer encode, speaker embedding, prompt embedding)
+then competes with the AR scheduler and the vocoder for the same interpreter,
+which caps single-replica throughput once concurrency passes ~32. Moving the
+preprocessing stage to its own process removes that contention: the stage
+loads a prompt-only frontend (embedding tables, text projection, predictor
+codec embeddings, speaker encoder) plus the speech tokenizer, together about
+2.2 GB of GPU memory for the extra process on a 1.7B checkpoint, and ships the
+prepared prompt tensors to the engine through the payload. Every GPU stage must
+then declare a memory fraction, and the engine’s static fraction has to agree
+with the one it declares:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--preprocessing.process<span class="w"> </span>tts_frontend<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--preprocessing.gpu<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--preprocessing.gpu_memory_fraction<span class="w"> </span><span class="m">0</span>.05<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.gpu_memory_fraction<span class="w"> </span><span class="m">0</span>.75<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.engine.mem_fraction_static<span class="w"> </span><span class="m">0</span>.75<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--vocoder.gpu_memory_fraction<span class="w"> </span><span class="m">0</span>.12
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">--vocoder.process</span> <span class="pre">vocoder</span></code> composes with it (lower <code class="docutils literal notranslate"><span class="pre">tts_engine</span></code> to 0.72 and
+give the vocoder 0.15). Six SeedTTS samples at a fixed seed produced identical
+PCM in both layouts; the extra process costs its CUDA context plus the frontend
+weights.</p>
+</section>
+</section>
+<section id="synthesizing-speech">
+<h2>Synthesizing Speech<a class="headerlink" href="#synthesizing-speech" title="Link to this heading">#</a></h2>
+<section id="text-only-requests">
+<h3>Text-only Requests<a class="headerlink" href="#text-only-requests" title="Link to this heading">#</a></h3>
+<p>Qwen3-TTS Base checkpoints require a reference clip. Text-only requests are supported by CustomVoice and VoiceDesign checkpoints; see <a class="reference internal" href="../basic_usage/tts.html"><span class="std std-doc">TTS Model Usage</span></a> for those launch commands.</p>
+</section>
+<section id="voice-cloning">
+<h3>Voice Cloning<a class="headerlink" href="#voice-cloning" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">references</span></code> field accepts <code class="docutils literal notranslate"><span class="pre">audio_path</span></code> (a local path or HTTP URL) and <code class="docutils literal notranslate"><span class="pre">text</span></code> (the
+transcript of that clip). Supplying the transcript enables in-context-learning (ICL) mode and
+materially improves cloning quality; omitting it falls back to speaker-embedding (x-vector)
+mode.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "SGLang-Omni is a great project!",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">      "text": "We asked over twenty different people, and they all said it was his."</span>
+<span class="s1">    }]</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_text</span></code> are accepted as shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> and
+<code class="docutils literal notranslate"><span class="pre">references[0].text</span></code>.</p>
+<section id="python">
+<h4>Python<a class="headerlink" href="#python" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"Qwen/Qwen3-TTS-12Hz-0.6B-Base"</span><span class="p">,</span>
+        <span class="s2">"voice"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Get the trust fund to the bank early."</span><span class="p">,</span>
+        <span class="s2">"references"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"audio_path"</span><span class="p">:</span> <span class="s2">"https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav"</span><span class="p">,</span>
+            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"We asked over twenty different people, and they all said it was his."</span><span class="p">,</span>
+        <span class="p">}],</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Non-streaming responses include <code class="docutils literal notranslate"><span class="pre">X-Finish-Reason:</span> <span class="pre">stop</span></code> after codec EOS or
+<code class="docutils literal notranslate"><span class="pre">X-Finish-Reason:</span> <span class="pre">length</span></code> when generation reaches <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>. A <code class="docutils literal notranslate"><span class="pre">length</span></code>
+response still contains decodable audio, but the utterance may be incomplete.
+Models that do not report how generation ended send <code class="docutils literal notranslate"><span class="pre">X-Finish-Reason:</span> <span class="pre">unknown</span></code>.
+Batch responses expose the same value as each item’s <code class="docutils literal notranslate"><span class="pre">finish_reason</span></code>.</p>
+</section>
+<section id="leading-silence-in-x-vector-mode">
+<h4>Leading silence in x-vector mode<a class="headerlink" href="#leading-silence-in-x-vector-mode" title="Link to this heading">#</a></h4>
+<p>Without a reference transcript the talker starts cold, and on most requests it
+opens with several frames of room-tone silence before speaking, which the
+listener hears as extra time to first audio. The engine therefore excludes
+silence codec ids from the first two frames of x-vector-only requests. The
+silence ids are derived at startup from the checkpoint’s own codec (it encodes
+stationary noise up to -50 dBFS) and logged once. ICL, CustomVoice, and
+VoiceDesign requests are not affected.</p>
+<p>On SeedTTS EN (1088 clips, no reference text, seed 0):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Checkpoint</p></th>
+<th class="head"><p>Frames masked</p></th>
+<th class="head"><p>Median onset</p></th>
+<th class="head"><p>Onsets &gt; 160 ms</p></th>
+<th class="head"><p>WER</p></th>
+<th class="head"><p>Speaker similarity</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1.7B Base</p></td>
+<td><p>0</p></td>
+<td><p>495 ms</p></td>
+<td><p>95%</p></td>
+<td><p>0.854%</p></td>
+<td><p>61.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>1.7B Base</p></td>
+<td><p>2 (default)</p></td>
+<td><p>155 ms</p></td>
+<td><p>47%</p></td>
+<td><p>0.904%</p></td>
+<td><p>60.87</p></td>
+</tr>
+<tr class="row-even"><td><p>0.6B Base</p></td>
+<td><p>0</p></td>
+<td><p>480 ms</p></td>
+<td><p>86%</p></td>
+<td><p>1.532%</p></td>
+<td><p>58.41</p></td>
+</tr>
+<tr class="row-odd"><td><p>0.6B Base</p></td>
+<td><p>2 (default)</p></td>
+<td><p>75 ms</p></td>
+<td><p>23%</p></td>
+<td><p>1.072%</p></td>
+<td><p>58.10</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The mask changes which codec ids the first frames can sample, so outputs differ
+from the unmasked model. To turn it off:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-Base<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_1_7b.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tts_engine.factory.leading_silence_mask_frames<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Details and the full sweep are in
+<a class="reference internal" href="../benchmarks/qwen3_tts_leading_silence.html"><span class="std std-doc">the leading-silence benchmark</span></a>.</p>
+</section>
+</section>
+<section id="language-hint">
+<h3>Language Hint<a class="headerlink" href="#language-hint" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">language</span></code> biases the model toward a target language. It defaults to <code class="docutils literal notranslate"><span class="pre">auto</span></code> (let the model
+detect). Supported languages are Chinese, English, Japanese, Korean, German, French, Russian,
+Portuguese, Spanish, and Italian.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "今天天气不错，就该出去晒晒太阳。",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">      "text": "We asked over twenty different people, and they all said it was his."</span>
+<span class="s1">    }],</span>
+<span class="s1">    "language": "Chinese"</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+</section>
+<section id="streaming">
+<h3>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
+<p>Set <code class="docutils literal notranslate"><span class="pre">&quot;stream&quot;:</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;response_format&quot;:</span> <span class="pre">&quot;pcm&quot;</span></code> to receive raw PCM audio
+chunks in real time:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-N<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "Get the trust fund to the bank early.",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">      "text": "We asked over twenty different people, and they all said it was his."</span>
+<span class="s1">    }],</span>
+<span class="s1">    "stream": true,</span>
+<span class="s1">    "response_format": "pcm"</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.pcm
+</pre></div>
+</div>
+<p>Streaming returns <code class="docutils literal notranslate"><span class="pre">audio/pcm</span></code> 16-bit mono PCM bytes with sample-rate metadata in
+the response headers. See the <a class="reference internal" href="higgs_tts.html#streaming"><span class="std std-ref">Higgs TTS cookbook</span></a>
+for a full Python raw PCM consumer.</p>
+<p>All three task types (Base/reference-cloning, CustomVoice and VoiceDesign) use
+true incremental codec and vocoder streaming, for both this HTTP endpoint and
+<code class="docutils literal notranslate"><span class="pre">/v1/audio/speech/stream</span></code> WebSocket sessions with <code class="docutils literal notranslate"><span class="pre">stream_audio=true</span></code>. Pass
+<code class="docutils literal notranslate"><span class="pre">&quot;stream_codec_output&quot;:</span> <span class="pre">false</span></code> on a request, or launch with
+<code class="docutils literal notranslate"><span class="pre">--preprocessing.factory.stream_codec_output</span> <span class="pre">false</span></code>, to restore whole-utterance
+decoding.</p>
+<p>Streamed CustomVoice output on validated voice/language pairs (currently
+Ryan/English with default sampling) withholds the model’s silent bootstrap
+codec frame, removing about 80 ms of leading silence from the first chunk. The
+frame still feeds the vocoder, so every later sample is unchanged, and a
+runtime silence check emits the audio unmodified whenever the first frame is
+not actually silent. Opt out per request with
+<code class="docutils literal notranslate"><span class="pre">&quot;suppress_bootstrap_silence&quot;:</span> <span class="pre">false</span></code> or per deployment with
+<code class="docutils literal notranslate"><span class="pre">--vocoder.factory.suppress_bootstrap_silence</span> <span class="pre">false</span></code>.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">initial_codec_chunk_frames</span></code> is omitted, Qwen3-TTS ramps its first chunks
+<code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code> codec frames before the steady stride, so first audio leaves after a
+single AR step while the playback cushion is rebuilt within four chunks. Pass an
+explicit value to trade continuity against time-to-first-audio.
+Utterances that finish in fewer than the first chunk’s generated codec frames never reach the
+first chunk, so their audio arrives complete in a single final flush.</p>
+<section id="codec-decoding-defaults">
+<h4>Codec decoding defaults<a class="headerlink" href="#codec-decoding-defaults" title="Link to this heading">#</a></h4>
+<p>Streaming decodes run on the stateful incremental codec by default: each
+follow-up chunk decodes only its fresh frames against per-stream state held in
+a preallocated arena, and the follow-up workers collect for 4 ms. On NVIDIA, AMD
+and MUSA GPUs steady-state cohorts also decode asynchronously on a priority stream
+and replay CUDA graphs whose decode step is <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code>d, which costs about
+a minute of startup compiling the steady shapes. The left-context decoder remains
+available as a rollback:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vocoder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">enable_stateful_codec_decoder</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">incremental_codec_cuda_graph</span></code>, <code class="docutils literal notranslate"><span class="pre">incremental_codec_compile</span></code>, <code class="docutils literal notranslate"><span class="pre">async_decode</span></code> and
+<code class="docutils literal notranslate"><span class="pre">followup_batch_wait_ms</span></code> are the individual switches. Measured on one H100
+80GB at 20 requests per second, three client seeds of roughly 1200 requests
+each: the default path holds 0.6% to 2.3% of streams underrun against 20.9%
+for the left-context decoder, with first playable audio at 55 to 58 ms
+against 82 to 89 ms.</p>
+<p>Intel XPU, Ascend NPU, CPU and Apple MPS decode synchronously by default. To opt
+in on Intel GPUs, follow the
+<a class="reference internal" href="../get_started/installation_xpu.html#qwen3-tts-text-to-speech-single-xpu"><span class="std std-ref">Qwen3-TTS XPU recipe</span></a>.</p>
+<p>Each follow-up batch sorts the stateful decoder’s cohorts, and the rows within
+each, by playback deadline: the nearest cohort launches first and its nearest
+rows fill the first graph-sized group. Left-context decodes keep queue order.
+The follow-up workers also commit each in-flight cohort as soon as its decode
+has finished, checked at the top of the worker loop and before each launch,
+instead of at the next drain.</p>
+</section>
+<section id="first-audio-chunk-ramp">
+<h4>First-audio chunk ramp<a class="headerlink" href="#first-audio-chunk-ramp" title="Link to this heading">#</a></h4>
+<p>For latency-sensitive deployments the whole early chunk schedule can be
+configured server-side with <code class="docutils literal notranslate"><span class="pre">stream_chunk_ramp</span></code> on the vocoder stage: entry
+<code class="docutils literal notranslate"><span class="pre">i</span></code> sizes streaming decode chunk <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code> in codec frames, and past the ramp
+the steady stride takes over, so <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">4,</span> <span class="pre">8]</span></code> yields a
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">4</span> <span class="pre">-&gt;</span> <span class="pre">8</span> <span class="pre">-&gt;</span> <span class="pre">8</span> <span class="pre">-&gt;</span> <span class="pre">...</span></code> schedule. Set it through a pipeline config file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">config_cls</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qwen3TTSPipelineConfig</span>
+<span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qwen/Qwen3-TTS-12Hz-0.6B-Base</span>
+<span class="nt">stages</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vocoder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">factory</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">stream_chunk_ramp</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">8</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_omni.cli<span class="w"> </span>serve<span class="w"> </span>--config<span class="w"> </span>qwen3_tts_ramp.yaml
+</pre></div>
+</div>
+<p>Smaller early chunks lower time-to-first-audio but start playback with less
+buffered audio, so the continuity cost grows with concurrency. The default
+<code class="docutils literal notranslate"><span class="pre">[1,</span> <span class="pre">2,</span> <span class="pre">4]</span></code> is the most aggressive schedule and suits low concurrency; prefer
+<code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">4,</span> <span class="pre">8]</span></code> at moderate concurrency and <code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">8]</span></code> for saturated serving, where
+the wider first chunk buys back the playback cushion. The ramp is mutually
+exclusive with the legacy <code class="docutils literal notranslate"><span class="pre">initial_chunk_frames</span></code> /
+<code class="docutils literal notranslate"><span class="pre">stream_initial_followup_stride</span></code> options, its first entry must not exceed the
+steady stride, and a per-request <code class="docutils literal notranslate"><span class="pre">initial_codec_chunk_frames</span></code> still overrides
+only the first chunk.</p>
+</section>
+</section>
+</section>
+<section id="generation-parameters">
+<h2>Generation Parameters<a class="headerlink" href="#generation-parameters" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p>served model</p></td>
+<td><p>Served model identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input</span></code></p></td>
+<td><p>(required)</p></td>
+<td><p>Text to synthesize</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">voice</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>Voice identifier. For Base reference cloning, the reference clip provides the speaker conditioning</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">references</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Reference clip for cloning. Each item has <code class="docutils literal notranslate"><span class="pre">audio_path</span></code> and <code class="docutils literal notranslate"><span class="pre">text</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_text</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> / <code class="docutils literal notranslate"><span class="pre">references[0].text</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">language</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p>Target-language hint (see list above)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.9</span></code></p></td>
+<td><p>Sampling temperature</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">top_p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Top-p sampling</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">top_k</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">50</span></code></p></td>
+<td><p>Top-k sampling</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.05</span></code></p></td>
+<td><p>Repetition penalty</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2048</span></code></p></td>
+<td><p>Maximum number of generated codec tokens</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Random seed for reproducibility</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Stream raw PCM audio chunks</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">initial_codec_chunk_frames</span></code></p></td>
+<td><p>ramp <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code> when omitted</p></td>
+<td><p>First streaming vocoder chunk size in codec frames. An explicit value replaces the ramp’s first chunk only. Smaller values lower TTFA but underrun more easily; <code class="docutils literal notranslate"><span class="pre">0</span></code> uses the steady stride from the start</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream_codec_output</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Forward codec frames to the vocoder as they are generated. Set <code class="docutils literal notranslate"><span class="pre">false</span></code> to restore whole-utterance decoding for CustomVoice/VoiceDesign</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">suppress_bootstrap_silence</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>Withhold the silent bootstrap codec frame’s audio from streamed CustomVoice output (validated voice/language pairs only, guarded by a runtime silence check). Set <code class="docutils literal notranslate"><span class="pre">false</span></code> to keep the leading silence</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="model-variants">
+<h2>Model Variants<a class="headerlink" href="#model-variants" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Checkpoint</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Config</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-TTS-12Hz-0.6B-Base</span></code></p></td>
+<td><p>0.6B</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_tts_0_6b.yaml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-TTS-12Hz-1.7B-Base</span></code></p></td>
+<td><p>1.7B</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_tts_1_7b.yaml</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Both expose an identical request API. The 1.7B model has higher capacity (typically better
+quality) at a larger memory and latency cost; the 0.6B model is lighter and faster.</p>
+</section>
+<section id="customvoice-checkpoints">
+<h2>CustomVoice Checkpoints<a class="headerlink" href="#customvoice-checkpoints" title="Link to this heading">#</a></h2>
+<p>CustomVoice generates speech with built-in speakers through the same pipeline. Use it without reference audio; omit <code class="docutils literal notranslate"><span class="pre">ref_audio</span></code>, <code class="docutils literal notranslate"><span class="pre">ref_text</span></code>, <code class="docutils literal notranslate"><span class="pre">references</span></code>, and <code class="docutils literal notranslate"><span class="pre">x_vector_only_mode</span></code>. Omit <code class="docutils literal notranslate"><span class="pre">task_type</span></code> or set it to <code class="docutils literal notranslate"><span class="pre">CustomVoice</span></code>.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Checkpoint</p></th>
+<th class="head"><p>Config</p></th>
+<th class="head"><p>Instruction guidance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-TTS-12Hz-0.6B-CustomVoice</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_tts_0_6b_customvoice.yaml</span></code></p></td>
+<td><p>Accepted for backward compatibility, but not recommended</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_tts_1_7b_customvoice.yaml</span></code></p></td>
+<td><p>Supported</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Both released checkpoints provide <code class="docutils literal notranslate"><span class="pre">Serena</span></code>, <code class="docutils literal notranslate"><span class="pre">Vivian</span></code>, <code class="docutils literal notranslate"><span class="pre">Uncle_Fu</span></code>, <code class="docutils literal notranslate"><span class="pre">Ryan</span></code>, <code class="docutils literal notranslate"><span class="pre">Aiden</span></code>, <code class="docutils literal notranslate"><span class="pre">Ono_Anna</span></code>, <code class="docutils literal notranslate"><span class="pre">Sohee</span></code>, <code class="docutils literal notranslate"><span class="pre">Eric</span></code>, and <code class="docutils literal notranslate"><span class="pre">Dylan</span></code>. Speaker matching is case-insensitive; an omitted or <code class="docutils literal notranslate"><span class="pre">default</span></code> voice selects <code class="docutils literal notranslate"><span class="pre">Vivian</span></code>. <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/audio/voices</span></code> lists <code class="docutils literal notranslate"><span class="pre">default</span></code> and the served checkpoint’s speakers. Unknown speakers or supplied cloning fields return HTTP 400; uploaded reference voices are not used for CustomVoice synthesis.</p>
+<p>Both sizes support buffered speech, batch requests, incremental HTTP PCM output, and WebSocket audio output. HTTP streaming requires <code class="docutils literal notranslate"><span class="pre">stream=true</span></code> with <code class="docutils literal notranslate"><span class="pre">response_format=&quot;pcm&quot;</span></code>; WebSocket sessions use <code class="docutils literal notranslate"><span class="pre">stream_audio=true</span></code> with <code class="docutils literal notranslate"><span class="pre">response_format=&quot;pcm&quot;</span></code>.</p>
+<p><strong>0.6B instruction compatibility:</strong> SGLang-Omni continues to pass optional <code class="docutils literal notranslate"><span class="pre">instructions</span></code> into the 0.6B prompt, preserving existing behavior. The released 0.6B model does not provide reliable instruction control; omit this field or use 1.7B when style control is needed.</p>
+<p><strong>Eric/Dylan language behavior:</strong> For both sizes, <code class="docutils literal notranslate"><span class="pre">language:</span> <span class="pre">Auto</span></code> selects Eric’s Sichuan dialect token or Dylan’s Beijing dialect token. An explicit language takes precedence: <code class="docutils literal notranslate"><span class="pre">language:</span> <span class="pre">Chinese</span></code> keeps the Chinese language token. This preserves existing SGLang-Omni behavior and differs from the QwenLM/Qwen3-TTS Python wrapper (<code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> 0.1.1), which also selects dialect tokens for <code class="docutils literal notranslate"><span class="pre">Chinese</span></code>. This is a conditioning choice, not a guarantee that the speaker’s accent disappears.</p>
+<p>Start the 1.7B checkpoint with its matching config:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_tts_1_7b_customvoice.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Then select a built-in speaker in the request. For 0.6B, use its model/config pair from the table and omit <code class="docutils literal notranslate"><span class="pre">instructions</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",</span>
+<span class="s1">    "input": "SGLang-Omni serves Qwen CustomVoice.",</span>
+<span class="s1">    "voice": "Ryan",</span>
+<span class="s1">    "language": "English",</span>
+<span class="s1">    "instructions": "Speak clearly and calmly."</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>custom-voice.wav
+</pre></div>
+</div>
+</section>
+<section id="benchmark-results">
+<h2>Benchmark Results<a class="headerlink" href="#benchmark-results" title="Link to this heading">#</a></h2>
+<section id="b-base">
+<h3>0.6B Base<a class="headerlink" href="#b-base" title="Link to this heading">#</a></h3>
+<p>Qwen3-TTS-12Hz-0.6B-Base on Seed-TTS EN (1088 utterances, reference voice cloning from each
+prompt), concurrency 16, WER scored with HF Whisper-large-v3. Hardware: 1× H200 SXM.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>WER (corpus, excl. runaway outliers)</p></td>
+<td><p>1.07%</p></td>
+</tr>
+<tr class="row-odd"><td><p>WER (per-sample median / p95)</p></td>
+<td><p>0.00% / 9.09%</p></td>
+</tr>
+<tr class="row-even"><td><p>WER (corpus micro-avg, raw)</p></td>
+<td><p>18.29%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Runaway samples (&gt;50% WER)</p></td>
+<td><p>2 / 1088 (0.2%)</p></td>
+</tr>
+<tr class="row-even"><td><p>Latency mean / median (s)</p></td>
+<td><p>6.61 / 6.24</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTF mean / median</p></td>
+<td><p>1.51 / 1.48</p></td>
+</tr>
+<tr class="row-even"><td><p>Output throughput (tok/s)</p></td>
+<td><p>115.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>Completed / failed requests</p></td>
+<td><p>1088 / 0</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Typical output is clean (0.00% median WER, 9.09% p95). Two utterances (0.2%) ran away into a
+repetition loop and generated ~164 s of looping audio up to <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>, which alone lifts
+the raw micro-average to 18.29%; excluding those, corpus WER is 1.07%. RTF &gt; 1 reflects the
+0.6B codec pipeline at concurrency 16, not single-stream latency. The 1.7B checkpoint trades
+latency for quality.</p>
+</section>
+<section id="b-customvoice">
+<h3>1.7B CustomVoice<a class="headerlink" href="#b-customvoice" title="Link to this heading">#</a></h3>
+<p>Qwen3-TTS-12Hz-1.7B-CustomVoice on the full Seed-TTS-Eval EN and ZH splits, concurrency 16, with 16 warmup requests per language/mode and <code class="docutils literal notranslate"><span class="pre">max_new_tokens=2048</span></code>. EN used Ryan/English and ZH used Vivian/Chinese, without reference audio or instructions. WER/CER was scored with Qwen3-ASR-1.7B at concurrency 32. Hardware: 1× H200 141 GB, BF16, TP1. Sampling overrides and seed were unset.</p>
+<p>The server used <code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.max_running_requests</span> <span class="pre">64</span></code>, <code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.cuda_graph_max_bs</span> <span class="pre">64</span></code>, <code class="docutils literal notranslate"><span class="pre">--tts_engine.engine.torch_compile_max_bs</span> <span class="pre">64</span></code>, <code class="docutils literal notranslate"><span class="pre">--vocoder.process</span> <span class="pre">vocoder</span></code>, <code class="docutils literal notranslate"><span class="pre">--tts_engine.gpu_memory_fraction</span> <span class="pre">0.85</span></code>, and <code class="docutils literal notranslate"><span class="pre">--vocoder.gpu_memory_fraction</span> <span class="pre">0.10</span></code>; <code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> remained disabled. Streaming used the default <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-&gt;</span> <span class="pre">2</span> <span class="pre">-&gt;</span> <span class="pre">4</span></code> chunk ramp without a request-level override. Each language/mode was measured once, in non-streaming EN/ZH then streaming EN/ZH order on the same warmed server. The target GPU had no external GPU process during timed windows; host CPU, memory, and I/O were shared with another profiling task.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head text-right"><p>Non-streaming EN</p></th>
+<th class="head text-right"><p>Non-streaming ZH</p></th>
+<th class="head text-right"><p>Streaming EN</p></th>
+<th class="head text-right"><p>Streaming ZH</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Samples</p></td>
+<td class="text-right"><p>1088</p></td>
+<td class="text-right"><p>2020</p></td>
+<td class="text-right"><p>1088</p></td>
+<td class="text-right"><p>2020</p></td>
+</tr>
+<tr class="row-odd"><td><p>Corpus WER/CER</p></td>
+<td class="text-right"><p>1.608%</p></td>
+<td class="text-right"><p>0.984%</p></td>
+<td class="text-right"><p>2.085%</p></td>
+<td class="text-right"><p>0.927%</p></td>
+</tr>
+<tr class="row-even"><td><p>Corpus WER/CER (excl. &gt;50% outliers)</p></td>
+<td class="text-right"><p>1.359%</p></td>
+<td class="text-right"><p>0.984%</p></td>
+<td class="text-right"><p>1.454%</p></td>
+<td class="text-right"><p>0.927%</p></td>
+</tr>
+<tr class="row-odd"><td><p>Samples above 50% WER/CER</p></td>
+<td class="text-right"><p>3</p></td>
+<td class="text-right"><p>0</p></td>
+<td class="text-right"><p>4</p></td>
+<td class="text-right"><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>UTMOS</p></td>
+<td class="text-right"><p>4.1723</p></td>
+<td class="text-right"><p>3.1824</p></td>
+<td class="text-right"><p>4.1500</p></td>
+<td class="text-right"><p>3.1789</p></td>
+</tr>
+<tr class="row-odd"><td><p>QPS</p></td>
+<td class="text-right"><p>14.788</p></td>
+<td class="text-right"><p>13.307</p></td>
+<td class="text-right"><p>10.098</p></td>
+<td class="text-right"><p>8.333</p></td>
+</tr>
+<tr class="row-even"><td><p>Latency mean (s)</p></td>
+<td class="text-right"><p>1.075</p></td>
+<td class="text-right"><p>1.198</p></td>
+<td class="text-right"><p>1.573</p></td>
+<td class="text-right"><p>1.915</p></td>
+</tr>
+<tr class="row-odd"><td><p>RTF mean</p></td>
+<td class="text-right"><p>0.2335</p></td>
+<td class="text-right"><p>0.2079</p></td>
+<td class="text-right"><p>0.3380</p></td>
+<td class="text-right"><p>0.3332</p></td>
+</tr>
+<tr class="row-even"><td><p>TTFA mean (s)</p></td>
+<td class="text-right"><p>N/A</p></td>
+<td class="text-right"><p>N/A</p></td>
+<td class="text-right"><p>0.1213</p></td>
+<td class="text-right"><p>0.1047</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Corpus WER (EN) / CER (ZH) is total edit distance divided by total reference words / characters and includes every sample. The filtered row excludes samples whose own WER/CER exceeds 50% and recomputes the corpus rate. UTMOS is the mean predicted audio-quality score, not a listening-test score. These independently sampled runs are not a paired comparison of streaming and non-streaming quality; the Base result also uses different conditioning and a different ASR evaluator.</p>
+<p>TTFA measures arrival of the first PCM payload, not the first audible speech; its mean payload duration was 80 ms in both languages. All 3,108 streaming requests were continuity-scored: 98.99% EN and 93.76% ZH had no playback underrun longer than 50 ms. Maximum underrun was 396.1 ms EN and 2072.0 ms ZH. The default ramp therefore does not guarantee uninterrupted playback at concurrency 16; see <a class="reference internal" href="#first-audio-chunk-ramp"><span class="std std-ref">First-audio chunk ramp</span></a> for the buffering tradeoff.</p>
+</section>
+</section>
+<section id="known-limitations">
+<h2>Known Limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Reference audio recommended.</strong> As a cloning model, Qwen3-TTS Base produces robotic speech
+without a reference clip.</p></li>
+<li><p><strong>Transcript improves cloning.</strong> Providing <code class="docutils literal notranslate"><span class="pre">text</span></code> in <code class="docutils literal notranslate"><span class="pre">references</span></code> (ICL mode) yields better
+speaker similarity than speaker-embedding-only (x-vector) mode.</p></li>
+<li><p><strong>Language detection.</strong> <code class="docutils literal notranslate"><span class="pre">language:</span> <span class="pre">auto</span></code> may misdetect for short or code-switched inputs;
+set <code class="docutils literal notranslate"><span class="pre">language</span></code> explicitly when you know the target language.</p></li>
+<li><p><strong>Rare runaway generation.</strong> Roughly 0.2% of utterances (observed on the 0.6B checkpoint) can
+fall into a repetition loop and keep generating up to <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>. Raising
+<code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code> (default <code class="docutils literal notranslate"><span class="pre">1.05</span></code>) or lowering <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> mitigates it; the 1.7B
+checkpoint is less prone.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="fishaudio_s2_pro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Fish Audio S2-Pro</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ming_tts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Ming-Omni-TTS</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ascend-npu-baseline">Ascend NPU baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deterministic-inference">Deterministic Inference</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overload-admission-policy">Overload / admission policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-cuda-graphs">Prefill CUDA graphs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prefill-admission-coalescing">Prefill Admission Coalescing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#process-topology">Process topology</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-only-requests">Text-only Requests</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#leading-silence-in-x-vector-mode">Leading silence in x-vector mode</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#language-hint">Language Hint</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#codec-decoding-defaults">Codec decoding defaults</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#first-audio-chunk-ramp">First-audio chunk ramp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-parameters">Generation Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-variants">Model Variants</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#customvoice-checkpoints">CustomVoice Checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-results">Benchmark Results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-base">0.6B Base</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-customvoice">1.7B CustomVoice</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Oct 28, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
