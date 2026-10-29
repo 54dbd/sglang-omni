@@ -92,7 +92,7 @@ dependencies = [
     # available on Apple arm64 and is unrelated to the Qwen3-ASR path.
     "dots.tts==0.2.1; sys_platform != 'darwin' or platform_machine != 'arm64'",
     # Ming-Omni
-    "diffusers==0.37.0",      # Omni's own Ming-Omni pin; not an sglang core dependency
+    "diffusers==0.38.0",      # Omni's own Ming-Omni pin; not an sglang core dependency
     "x-transformers",          # Ming talker rotary embeddings
     # note (yexiaodong): ZONOS2 text normalization pulls Pynini/OpenFst, which
     # has no usable Apple arm64 wheel and is unrelated to the Qwen3-ASR path.
@@ -112,9 +112,9 @@ fun-cosyvoice3 = [
     "setuptools<80",  # Note (yexiaodong): pyworld 0.3.4 imports pkg_resources.
     "wetext==0.0.4",
     "inflect==7.3.1",
-    "gdown==5.1.0",
+    "gdown==5.2.2",
     "wget==3.2",
-    "lightning==2.6.5",
+    "lightning==2.6.6",
     "matplotlib",
 ]
 
